@@ -44,3 +44,21 @@
    - Pode impactar ligeiramente o tempo de geração do jogo
    - Especialmente útil para jogadores que preferem puzzles puramente lógicos
    - Adicionar explicação nas instruções sobre o que é o modo "No Guess"
+
+3. Atualizar tema visual para design minimalista
+   - Redesenhar todos os botões para estilo minimalista
+   - Botões devem seguir a cor do tema selecionado como cor primária
+   - Remover bordas excessivas e usar design mais limpo
+   - Funcionalidade:
+     - Botões do header (voltar, configurações, tema) com design minimalista
+     - Botões do footer (bomba, bandeira) com estilo mais sutil
+     - Botões de configurações seguindo a mesma linguagem visual
+     - Botões da tela inicial com design consistente
+   - Adicionar transparência no menu superior (header)
+     - Background do header com transparência (ex: rgba com alpha 0.85-0.95)
+     - Efeito de glassmorphism sutil
+     - Backdrop blur para melhor legibilidade
+   - Manter acessibilidade e contraste adequados
+   - Transições suaves entre estados (hover, active, focus)
+   - Design responsivo que funciona bem em todas as telas
+   - Temas escuro e claro devem ter tratamento adequado da transparência
