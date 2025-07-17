@@ -11,16 +11,18 @@
 <body>
     <div class="app-container">
         <header class="game-header">
-            <div class="game-info">
-                <div class="mines-count">
-                    <span class="icon">💣</span>
-                    <span id="mines-remaining">10</span>
+            <div class="header-top">
+                <button id="back-btn" class="back-btn">←</button>
+                <div class="header-center">
+                    <div class="mines-count">
+                        <span class="icon">🚩</span>
+                        <span id="mines-remaining">10</span>
+                    </div>
+                    <div class="timer">
+                        <span id="timer-display">00:00</span>
+                    </div>
                 </div>
-                <div class="timer">
-                    <span class="icon">⏱️</span>
-                    <span id="timer-display">000</span>
-                </div>
-                <button id="settings-btn" class="settings-btn">⚙️</button>
+                <button id="theme-btn" class="theme-btn">🎨</button>
             </div>
             <div class="game-controls">
                 <button id="new-game-btn" class="new-game-btn">New Game</button>
@@ -39,6 +41,13 @@
                 <div id="game-board" class="game-board"></div>
             </div>
         </main>
+
+        <footer class="game-footer">
+            <div class="footer-pills">
+                <button id="settings-btn" class="pill-btn">⚙️</button>
+                <button id="flag-toggle-btn" class="pill-btn">🚩</button>
+            </div>
+        </footer>
 
         <div id="settings-panel" class="settings-panel hidden">
             <div class="settings-content">
@@ -113,6 +122,26 @@
                         <label for="orientation-horizontal">Horizontal</label>
                         <input type="radio" id="orientation-vertical" name="board-orientation" value="vertical">
                         <label for="orientation-vertical">Vertical</label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Color Theme</h3>
+                    <div class="color-theme-selector">
+                        <input type="radio" id="theme-blue" name="color-theme" value="blue" checked>
+                        <label for="theme-blue" class="theme-option theme-blue">Blue</label>
+                        
+                        <input type="radio" id="theme-green" name="color-theme" value="green">
+                        <label for="theme-green" class="theme-option theme-green">Green</label>
+                        
+                        <input type="radio" id="theme-red" name="color-theme" value="red">
+                        <label for="theme-red" class="theme-option theme-red">Red</label>
+                        
+                        <input type="radio" id="theme-orange" name="color-theme" value="orange">
+                        <label for="theme-orange" class="theme-option theme-orange">Orange</label>
+                        
+                        <input type="radio" id="theme-purple" name="color-theme" value="purple">
+                        <label for="theme-purple" class="theme-option theme-purple">Purple</label>
                     </div>
                 </div>
 

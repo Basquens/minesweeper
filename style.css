@@ -34,6 +34,24 @@ body {
     --overlay-bg: rgba(0, 0, 0, 0.5);
     --selected-tile-color: #a8e6cf;
     
+    /* Light Mode Colors from layout_guide.md */
+    --tile-closed: #F0F0F0;
+    --tile-closed-border: #DCDCDC;
+    --tile-flag: #888888;
+    --tile-opened: #FFFFFF;
+    --tile-mine-bg: #E69595;
+    
+    /* Primary theme colors */
+    --primary-color: #5D91B3;
+    --primary-active: #2D8FBA;
+    
+    /* Number colors for light mode */
+    --num-1-light: #5B9BD5;
+    --num-2-light: #6BAE75;
+    --num-3-light: #C75B5B;
+    --num-4-light: #A881C3;
+    --num-5-light: #C48A4D;
+    
     /* Pastel tile colors */
     --tile-green: #a8e6cf;
     --tile-blue: #88d8ff;
@@ -67,6 +85,19 @@ body {
     --settings-bg: #1a1a1a;
     --overlay-bg: rgba(255, 255, 255, 0.1);
     
+    /* Dark Mode Colors from layout_guide.md */
+    --tile-closed: #2F3A49;
+    --tile-flag: #000000;
+    --tile-opened: var(--primary-color);
+    --tile-mine-bg: #E69595;
+    
+    /* Number colors for dark mode */
+    --num-1-light: #63B3ED;
+    --num-2-light: #68D391;
+    --num-3-light: #F56565;
+    --num-4-light: #B794F4;
+    --num-5-light: #ED8936;
+    
     /* Darker pastel colors for dark theme */
     --tile-green: #4a7c59;
     --tile-blue: #4a6fa5;
@@ -76,6 +107,32 @@ body {
     --tile-teal: #4a8079;
     --tile-purple: #7d5ba6;
     --tile-pink: #a0687b;
+}
+
+/* Color Theme Classes */
+.theme-blue {
+    --primary-color: #5D91B3;
+    --primary-active: #2D8FBA;
+}
+
+.theme-green {
+    --primary-color: #5EBB8F;
+    --primary-active: #3BA66C;
+}
+
+.theme-red {
+    --primary-color: #D95D5D;
+    --primary-active: #BA3F3F;
+}
+
+.theme-orange {
+    --primary-color: #D88A4D;
+    --primary-active: #B86E2E;
+}
+
+.theme-purple {
+    --primary-color: #9D71C7;
+    --primary-active: #805AD5;
 }
 
 /* App Container */
@@ -96,11 +153,17 @@ body {
     flex-shrink: 0;
 }
 
-.game-info {
+.header-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+}
+
+.header-center {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
 }
 
 .mines-count, .timer {
@@ -111,7 +174,7 @@ body {
     font-weight: bold;
 }
 
-.settings-btn {
+.back-btn, .theme-btn {
     background: var(--button-bg);
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -119,9 +182,14 @@ body {
     font-size: 1.2rem;
     cursor: pointer;
     transition: background-color 0.2s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.settings-btn:hover {
+.back-btn:hover, .theme-btn:hover {
     background-color: var(--button-hover);
 }
 
@@ -165,6 +233,49 @@ body {
     justify-content: center;
     align-items: center;
     padding: 1rem;
+    cursor: grab;
+}
+
+/* Game Footer */
+.game-footer {
+    padding: 1rem;
+    background-color: var(--bg-color);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.footer-pills {
+    background: var(--button-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    padding: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.pill-btn {
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pill-btn:hover {
+    background-color: var(--button-hover);
+}
+
+.pill-btn.active {
+    background-color: var(--primary-color);
+    color: var(--bg-color);
 }
 
 .game-board-container {
@@ -285,6 +396,51 @@ body {
 .color-option[data-color="teal"] { background-color: var(--tile-teal); }
 .color-option[data-color="purple"] { background-color: var(--tile-purple); }
 .color-option[data-color="pink"] { background-color: var(--tile-pink); }
+
+/* Color Theme Selector */
+.color-theme-selector {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.color-theme-selector input {
+    display: none;
+}
+
+.theme-option {
+    background: var(--button-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.theme-option::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+}
+
+.color-theme-selector input:checked + .theme-option {
+    border-color: var(--primary-color);
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+}
+
+.theme-option.theme-blue::before { background-color: #5D91B3; }
+.theme-option.theme-green::before { background-color: #5EBB8F; }
+.theme-option.theme-red::before { background-color: #D95D5D; }
+.theme-option.theme-orange::before { background-color: #D88A4D; }
+.theme-option.theme-purple::before { background-color: #9D71C7; }
 
 /* Settings Panel */
 .settings-panel {

@@ -13,7 +13,8 @@ class MinesweeperGame {
             primaryAction: 'reveal',
             holdDelay: 500,
             tileColor: 'green',
-            boardOrientation: 'auto'
+            boardOrientation: 'vertical',
+            colorTheme: 'blue'
         };
         
         this.tileColors = {
@@ -44,6 +45,7 @@ class MinesweeperGame {
         this.setupEventListeners();
         this.applyTheme();
         this.applyTileColor();
+        this.applyColorTheme();
         this.newGame();
     }
     
@@ -64,10 +66,13 @@ class MinesweeperGame {
         document.querySelector(`input[name="primary-action"][value="${this.settings.primaryAction}"]`).checked = true;
         document.querySelector(`input[name="tile-color"][value="${this.settings.tileColor}"]`).checked = true;
         document.querySelector(`input[name="board-orientation"][value="${this.settings.boardOrientation}"]`).checked = true;
+        document.querySelector(`input[name="color-theme"][value="${this.settings.colorTheme}"]`).checked = true;
         document.getElementById('hold-delay').value = this.settings.holdDelay;
         document.getElementById('delay-value').textContent = this.settings.holdDelay;
         this.applyTileColor();
         this.applyBoardOrientation();
+        this.applyColorTheme();
+        this.updateToggleButton();
     }
     
     applyTheme() {
@@ -83,6 +88,26 @@ class MinesweeperGame {
     
     applyBoardOrientation() {
         this.renderBoard();
+    }
+    
+    applyColorTheme() {
+        document.body.className = document.body.className.replace(/theme-\w+/g, '');
+        document.body.classList.add(`theme-${this.settings.colorTheme}`);
+    }
+    
+    updateToggleButton() {
+        const toggleBtn = document.getElementById('flag-toggle-btn');
+        const settingsBtn = document.getElementById('settings-btn');
+        
+        if (this.settings.primaryAction === 'flag') {
+            toggleBtn.classList.add('active');
+            toggleBtn.textContent = '🚩';
+        } else {
+            toggleBtn.classList.remove('active');
+            toggleBtn.textContent = '🚩';
+        }
+        
+        document.querySelector(`input[name="primary-action"][value="${this.settings.primaryAction}"]`).checked = true;
     }
     
     setupEventListeners() {
@@ -128,6 +153,26 @@ class MinesweeperGame {
                 this.applyBoardOrientation();
                 this.saveSettings();
             });
+        });
+        
+        document.querySelectorAll('input[name="color-theme"]').forEach(input => {
+            input.addEventListener('change', (e) => {
+                this.settings.colorTheme = e.target.value;
+                this.applyColorTheme();
+                this.saveSettings();
+            });
+        });
+        
+        document.getElementById('flag-toggle-btn').addEventListener('click', () => {
+            this.settings.primaryAction = this.settings.primaryAction === 'reveal' ? 'flag' : 'reveal';
+            this.updateToggleButton();
+            this.saveSettings();
+        });
+        
+        document.getElementById('theme-btn').addEventListener('click', () => {
+            this.settings.theme = this.settings.theme === 'light' ? 'dark' : 'light';
+            this.applyTheme();
+            this.saveSettings();
         });
         
         this.setupZoomControls();
