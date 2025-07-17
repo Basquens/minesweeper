@@ -10,6 +10,51 @@
 </head>
 <body>
     <div class="app-container">
+        <div id="start-screen" class="start-screen">
+            <div class="start-content">
+                <div class="game-logo">
+                    <h1>💣 Minesweeper</h1>
+                    <p class="game-subtitle">Choose your challenge</p>
+                </div>
+                
+                <div class="difficulty-cards">
+                    <div class="difficulty-card" data-difficulty="beginner">
+                        <div class="card-icon">🌱</div>
+                        <h3>Beginner</h3>
+                        <div class="card-details">
+                            <p>9×9 Grid</p>
+                            <p>10 Mines</p>
+                        </div>
+                        <div class="best-time" id="best-beginner">Best: --:--</div>
+                    </div>
+                    
+                    <div class="difficulty-card" data-difficulty="intermediate">
+                        <div class="card-icon">⚡</div>
+                        <h3>Intermediate</h3>
+                        <div class="card-details">
+                            <p>16×16 Grid</p>
+                            <p>40 Mines</p>
+                        </div>
+                        <div class="best-time" id="best-intermediate">Best: --:--</div>
+                    </div>
+                    
+                    <div class="difficulty-card" data-difficulty="expert">
+                        <div class="card-icon">🔥</div>
+                        <h3>Expert</h3>
+                        <div class="card-details">
+                            <p>30×16 Grid</p>
+                            <p>99 Mines</p>
+                        </div>
+                        <div class="best-time" id="best-expert">Best: --:--</div>
+                    </div>
+                </div>
+                
+                <div class="start-actions">
+                    <button id="continue-last-btn" class="continue-btn hidden">Continue Last Game</button>
+                    <button id="settings-start-btn" class="settings-start-btn">⚙️ Settings</button>
+                </div>
+            </div>
+        </div>
         <header class="game-header">
             <div class="header-top">
                 <button id="back-btn" class="back-btn">←</button>

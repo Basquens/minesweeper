@@ -43,6 +43,8 @@ class MinesweeperGame {
             expert: []
         };
         
+        this.showStartScreen = true;
+        
         this.init();
     }
     
@@ -53,7 +55,12 @@ class MinesweeperGame {
         this.applyTheme();
         this.applyTileColor();
         this.applyColorTheme();
-        this.newGame();
+        
+        if (this.showStartScreen) {
+            this.displayStartScreen();
+        } else {
+            this.newGame();
+        }
     }
     
     loadSettings() {
@@ -201,6 +208,15 @@ class MinesweeperGame {
         document.getElementById('close-settings').addEventListener('click', () => this.closeSettings());
         document.getElementById('play-again-btn').addEventListener('click', () => this.newGame());
         document.getElementById('view-board-btn').addEventListener('click', () => this.hideOverlay());
+        document.getElementById('back-btn').addEventListener('click', () => this.showStartScreen());
+        document.getElementById('settings-start-btn').addEventListener('click', () => this.openSettings());
+        
+        document.querySelectorAll('.difficulty-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                const difficulty = e.currentTarget.dataset.difficulty;
+                this.startNewGame(difficulty);
+            });
+        });
         
         document.querySelectorAll('input[name="theme"]').forEach(input => {
             input.addEventListener('change', (e) => {
@@ -438,6 +454,8 @@ class MinesweeperGame {
         this.updateDisplay();
         this.generateBoard();
         this.hideOverlay();
+        
+        document.getElementById('difficulty-select').value = this.currentDifficulty;
     }
     
     generateBoard() {
@@ -885,6 +903,36 @@ class MinesweeperGame {
     
     hideOverlay() {
         document.getElementById('game-overlay').classList.add('hidden');
+    }
+    
+    displayStartScreen() {
+        document.getElementById('start-screen').classList.remove('hidden');
+        this.updateStartScreenBestTimes();
+    }
+    
+    hideStartScreen() {
+        document.getElementById('start-screen').classList.add('hidden');
+    }
+    
+    showStartScreen() {
+        this.displayStartScreen();
+    }
+    
+    updateStartScreenBestTimes() {
+        Object.keys(this.difficulties).forEach(difficulty => {
+            const stats = this.getStatistics(difficulty);
+            const element = document.getElementById(`best-${difficulty}`);
+            if (element) {
+                element.textContent = stats.bestTime ? `Best: ${this.formatTime(stats.bestTime)}` : 'Best: --:--';
+            }
+        });
+    }
+    
+    startNewGame(difficulty) {
+        this.currentDifficulty = difficulty;
+        this.boardConfig = this.difficulties[difficulty];
+        this.hideStartScreen();
+        this.newGame();
     }
 }
 
