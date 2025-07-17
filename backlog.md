@@ -62,3 +62,31 @@
    - Transições suaves entre estados (hover, active, focus)
    - Design responsivo que funciona bem em todas as telas
    - Temas escuro e claro devem ter tratamento adequado da transparência
+
+# V3
+
+1. Implementar timelapse do último jogo finalizado
+   - Gravar todas as ações do jogador durante a partida
+   - Armazenar sequência de movimentos com timestamps
+   - Reproduzir o jogo completo em velocidade acelerada
+   - Funcionalidade:
+     - Capturar cada clique/toque com posição e tipo de ação
+     - Salvar estado do tabuleiro após cada movimento
+     - Gravar tempo decorrido de cada ação
+     - Armazenar apenas o último jogo finalizado (vitória ou derrota)
+   - Interface de reprodução:
+     - Botão "Ver Timelapse" na tela de resultado do jogo
+     - Controles de reprodução: play/pause, velocidade (1x, 2x, 4x, 8x)
+     - Indicador de progresso da reprodução
+     - Mostrar timer e contador de minas durante reprodução
+   - Visualização:
+     - Destacar o tile sendo clicado com animação
+     - Mostrar tipo de ação (revelar, bandeira, etc.)
+     - Transições suaves entre estados
+     - Possibilidade de pausar em qualquer momento
+   - Otimizações:
+     - Comprimir dados de movimento para economizar espaço
+     - Limitar armazenamento apenas ao último jogo
+     - Reprodução eficiente sem recarregar página
+   - Especialmente útil para analisar estratégias e aprender com erros
+   - Funcionalidade opcional que pode ser desabilitada nas configurações
