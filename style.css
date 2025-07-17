@@ -497,90 +497,68 @@ body {
 .tile.revealed[data-mines="7"] { color: var(--num-7); }
 .tile.revealed[data-mines="8"] { color: var(--num-8); }
 
-/* Tile color options */
-.tile-color-selector {
+
+/* Unified Color Theme Selector */
+.unified-color-selector {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.5rem;
-    margin-top: 0.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
 }
 
-.tile-color-selector input {
+.unified-color-selector input {
     display: none;
 }
 
-.color-option {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    border: 2px solid var(--border-color);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
-}
-
-.color-option:hover {
-    transform: scale(1.1);
-}
-
-.tile-color-selector input:checked + .color-option {
-    border-color: var(--text-color);
-    box-shadow: 0 0 0 2px var(--bg-color), 0 0 0 4px var(--text-color);
-}
-
-.color-option[data-color="green"] { background-color: var(--tile-green); }
-.color-option[data-color="blue"] { background-color: var(--tile-blue); }
-.color-option[data-color="red"] { background-color: var(--tile-red); }
-.color-option[data-color="yellow"] { background-color: var(--tile-yellow); }
-.color-option[data-color="orange"] { background-color: var(--tile-orange); }
-.color-option[data-color="teal"] { background-color: var(--tile-teal); }
-.color-option[data-color="purple"] { background-color: var(--tile-purple); }
-.color-option[data-color="pink"] { background-color: var(--tile-pink); }
-
-/* Color Theme Selector */
-.color-theme-selector {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-}
-
-.color-theme-selector input {
-    display: none;
-}
-
-.theme-option {
+.unified-theme-option {
     background: var(--button-bg);
     border: 2px solid var(--border-color);
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    padding: 1rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: center;
 }
 
-.theme-option::before {
-    content: '';
-    position: absolute;
-    left: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 16px;
-    height: 16px;
+.unified-theme-option:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.theme-colors {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.theme-primary,
+.theme-tile {
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    background-color: var(--primary-color);
+    border: 2px solid var(--bg-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.color-theme-selector input:checked + .theme-option {
+.unified-theme-option span {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.unified-color-selector input:checked + .unified-theme-option {
     border-color: var(--primary-color);
     background-color: var(--primary-color);
     color: var(--bg-color);
+    transform: scale(1.02);
 }
 
-.theme-option.theme-blue::before { background-color: #5D91B3; }
-.theme-option.theme-green::before { background-color: #5EBB8F; }
-.theme-option.theme-red::before { background-color: #D95D5D; }
-.theme-option.theme-orange::before { background-color: #D88A4D; }
-.theme-option.theme-purple::before { background-color: #9D71C7; }
+.unified-color-selector input:checked + .unified-theme-option .theme-primary,
+.unified-color-selector input:checked + .unified-theme-option .theme-tile {
+    border-color: var(--bg-color);
+}
 
 /* Game History Styles */
 .history-content {
@@ -1059,6 +1037,14 @@ body {
         padding: 0.75rem 1.5rem;
         font-size: 1rem;
     }
+    
+    .unified-color-selector {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .unified-theme-option {
+        padding: 0.75rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1078,6 +1064,14 @@ body {
     
     .overlay-content {
         padding: 1rem;
+    }
+    
+    .unified-color-selector {
+        grid-template-columns: 1fr;
+    }
+    
+    .unified-theme-option {
+        padding: 0.5rem;
     }
 }
 

@@ -12,20 +12,16 @@ class MinesweeperGame {
             theme: 'light',
             primaryAction: 'reveal',
             holdDelay: 500,
-            tileColor: 'green',
             boardOrientation: 'vertical',
             colorTheme: 'blue'
         };
         
-        this.tileColors = {
-            green: '#a8e6cf',
-            blue: '#88d8ff',
-            red: '#ffaaa5',
-            yellow: '#fff3b0',
-            orange: '#ffcc99',
-            teal: '#81e6d9',
-            purple: '#dbb2ff',
-            pink: '#ffc0cb'
+        this.themeMapping = {
+            blue: { primary: '#5D91B3', tile: '#88d8ff' },
+            green: { primary: '#5EBB8F', tile: '#a8e6cf' },
+            red: { primary: '#D95D5D', tile: '#ffaaa5' },
+            orange: { primary: '#D88A4D', tile: '#ffcc99' },
+            purple: { primary: '#9D71C7', tile: '#dbb2ff' }
         };
         
         this.difficulties = {
@@ -55,8 +51,7 @@ class MinesweeperGame {
         this.setupEventListeners();
         this.setupPWAInstallation();
         this.applyTheme();
-        this.applyTileColor();
-        this.applyColorTheme();
+        this.applyUnifiedTheme();
         
         if (this.showStartScreen) {
             this.displayStartScreen();
@@ -150,14 +145,12 @@ class MinesweeperGame {
     applySettings() {
         document.querySelector(`input[name="theme"][value="${this.settings.theme}"]`).checked = true;
         document.querySelector(`input[name="primary-action"][value="${this.settings.primaryAction}"]`).checked = true;
-        document.querySelector(`input[name="tile-color"][value="${this.settings.tileColor}"]`).checked = true;
         document.querySelector(`input[name="board-orientation"][value="${this.settings.boardOrientation}"]`).checked = true;
         document.querySelector(`input[name="color-theme"][value="${this.settings.colorTheme}"]`).checked = true;
         document.getElementById('hold-delay').value = this.settings.holdDelay;
         document.getElementById('delay-value').textContent = this.settings.holdDelay;
-        this.applyTileColor();
+        this.applyUnifiedTheme();
         this.applyBoardOrientation();
-        this.applyColorTheme();
         this.updateActionButtons();
     }
     
@@ -167,18 +160,18 @@ class MinesweeperGame {
         document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);
     }
     
-    applyTileColor() {
-        const color = this.tileColors[this.settings.tileColor];
-        document.documentElement.style.setProperty('--selected-tile-color', color);
+    applyUnifiedTheme() {
+        const theme = this.themeMapping[this.settings.colorTheme];
+        if (theme) {
+            document.documentElement.style.setProperty('--selected-tile-color', theme.tile);
+        }
+        
+        document.body.className = document.body.className.replace(/theme-\w+/g, '');
+        document.body.classList.add(`theme-${this.settings.colorTheme}`);
     }
     
     applyBoardOrientation() {
         this.renderBoard();
-    }
-    
-    applyColorTheme() {
-        document.body.className = document.body.className.replace(/theme-\w+/g, '');
-        document.body.classList.add(`theme-${this.settings.colorTheme}`);
     }
     
     updateActionButtons() {
@@ -255,14 +248,6 @@ class MinesweeperGame {
             this.saveSettings();
         });
         
-        document.querySelectorAll('input[name="tile-color"]').forEach(input => {
-            input.addEventListener('change', (e) => {
-                this.settings.tileColor = e.target.value;
-                this.applyTileColor();
-                this.saveSettings();
-            });
-        });
-        
         document.querySelectorAll('input[name="board-orientation"]').forEach(input => {
             input.addEventListener('change', (e) => {
                 this.settings.boardOrientation = e.target.value;
@@ -274,7 +259,7 @@ class MinesweeperGame {
         document.querySelectorAll('input[name="color-theme"]').forEach(input => {
             input.addEventListener('change', (e) => {
                 this.settings.colorTheme = e.target.value;
-                this.applyColorTheme();
+                this.applyUnifiedTheme();
                 this.saveSettings();
             });
         });
