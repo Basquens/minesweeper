@@ -37,11 +37,18 @@ class MinesweeperGame {
         this.currentDifficulty = 'beginner';
         this.boardConfig = this.difficulties[this.currentDifficulty];
         
+        this.gameHistory = {
+            beginner: [],
+            intermediate: [],
+            expert: []
+        };
+        
         this.init();
     }
     
     init() {
         this.loadSettings();
+        this.loadGameHistory();
         this.setupEventListeners();
         this.applyTheme();
         this.applyTileColor();
@@ -59,6 +66,76 @@ class MinesweeperGame {
     
     saveSettings() {
         localStorage.setItem('minesweeper-settings', JSON.stringify(this.settings));
+    }
+    
+    loadGameHistory() {
+        const saved = localStorage.getItem('minesweeper-history');
+        if (saved) {
+            this.gameHistory = { ...this.gameHistory, ...JSON.parse(saved) };
+        }
+    }
+    
+    saveGameHistory() {
+        localStorage.setItem('minesweeper-history', JSON.stringify(this.gameHistory));
+    }
+    
+    addToHistory(difficulty, time, won) {
+        const historyEntry = {
+            time: time,
+            won: won,
+            date: new Date().toISOString(),
+            difficulty: difficulty
+        };
+        
+        if (!this.gameHistory[difficulty]) {
+            this.gameHistory[difficulty] = [];
+        }
+        
+        this.gameHistory[difficulty].push(historyEntry);
+        
+        this.gameHistory[difficulty].sort((a, b) => {
+            if (a.won && !b.won) return -1;
+            if (!a.won && b.won) return 1;
+            if (a.won && b.won) return a.time - b.time;
+            return 0;
+        });
+        
+        this.gameHistory[difficulty] = this.gameHistory[difficulty].slice(0, 50);
+        
+        this.saveGameHistory();
+    }
+    
+    getTopTimes(difficulty, limit = 10) {
+        if (!this.gameHistory[difficulty]) return [];
+        
+        return this.gameHistory[difficulty]
+            .filter(entry => entry.won)
+            .slice(0, limit);
+    }
+    
+    getStatistics(difficulty) {
+        if (!this.gameHistory[difficulty]) {
+            return {
+                totalGames: 0,
+                gamesWon: 0,
+                winRate: 0,
+                bestTime: null,
+                averageTime: null
+            };
+        }
+        
+        const games = this.gameHistory[difficulty];
+        const wonGames = games.filter(g => g.won);
+        
+        const stats = {
+            totalGames: games.length,
+            gamesWon: wonGames.length,
+            winRate: games.length > 0 ? Math.round((wonGames.length / games.length) * 100) : 0,
+            bestTime: wonGames.length > 0 ? wonGames[0].time : null,
+            averageTime: wonGames.length > 0 ? Math.round(wonGames.reduce((sum, g) => sum + g.time, 0) / wonGames.length) : null
+        };
+        
+        return stats;
     }
     
     applySettings() {
@@ -180,6 +257,23 @@ class MinesweeperGame {
             this.settings.theme = this.settings.theme === 'light' ? 'dark' : 'light';
             this.applyTheme();
             this.saveSettings();
+        });
+        
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                this.updateHistoryDisplay(e.target.dataset.difficulty);
+            });
+        });
+        
+        document.getElementById('clear-history-btn').addEventListener('click', () => {
+            const difficulty = document.querySelector('.tab-btn.active').dataset.difficulty;
+            if (confirm(`Clear all ${difficulty} game history?`)) {
+                this.gameHistory[difficulty] = [];
+                this.saveGameHistory();
+                this.updateHistoryDisplay(difficulty);
+            }
         });
         
         this.setupZoomControls();
@@ -681,6 +775,7 @@ class MinesweeperGame {
             });
         }
         
+        this.addToHistory(this.currentDifficulty, this.timer, won);
         this.showGameResult(won);
     }
     
@@ -732,6 +827,35 @@ class MinesweeperGame {
     
     openSettings() {
         document.getElementById('settings-panel').classList.remove('hidden');
+        this.updateHistoryDisplay('beginner');
+    }
+    
+    updateHistoryDisplay(difficulty) {
+        const stats = this.getStatistics(difficulty);
+        const topTimes = this.getTopTimes(difficulty);
+        
+        document.getElementById('total-games').textContent = stats.totalGames;
+        document.getElementById('games-won').textContent = stats.gamesWon;
+        document.getElementById('win-rate').textContent = `${stats.winRate}%`;
+        document.getElementById('best-time').textContent = stats.bestTime ? this.formatTime(stats.bestTime) : '--:--';
+        document.getElementById('average-time').textContent = stats.averageTime ? this.formatTime(stats.averageTime) : '--:--';
+        
+        const timesList = document.getElementById('top-times-list');
+        
+        if (topTimes.length === 0) {
+            timesList.innerHTML = '<div class="no-times">No completed games yet</div>';
+        } else {
+            timesList.innerHTML = topTimes.map((entry, index) => {
+                const date = new Date(entry.date).toLocaleDateString();
+                return `
+                    <div class="time-entry">
+                        <span class="time-rank">#${index + 1}</span>
+                        <span class="time-value">${this.formatTime(entry.time)}</span>
+                        <span class="time-date">${date}</span>
+                    </div>
+                `;
+            }).join('');
+        }
     }
     
     closeSettings() {

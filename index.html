@@ -146,6 +146,49 @@
                 </div>
 
                 <div class="settings-section">
+                    <h3>Game History</h3>
+                    <div class="history-content">
+                        <div class="difficulty-tabs">
+                            <button class="tab-btn active" data-difficulty="beginner">Beginner</button>
+                            <button class="tab-btn" data-difficulty="intermediate">Intermediate</button>
+                            <button class="tab-btn" data-difficulty="expert">Expert</button>
+                        </div>
+                        
+                        <div class="history-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Games Played:</span>
+                                <span class="stat-value" id="total-games">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Games Won:</span>
+                                <span class="stat-value" id="games-won">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Win Rate:</span>
+                                <span class="stat-value" id="win-rate">0%</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Best Time:</span>
+                                <span class="stat-value" id="best-time">--:--</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Average Time:</span>
+                                <span class="stat-value" id="average-time">--:--</span>
+                            </div>
+                        </div>
+                        
+                        <div class="top-times">
+                            <h4>Top 10 Times</h4>
+                            <div class="times-list" id="top-times-list">
+                                <div class="no-times">No completed games yet</div>
+                            </div>
+                        </div>
+                        
+                        <button id="clear-history-btn" class="clear-history-btn">Clear History</button>
+                    </div>
+                </div>
+
+                <div class="settings-section">
                     <h3>Instructions</h3>
                     <div class="instructions">
                         <p><strong>Desktop:</strong> Left click = primary action, Right click = secondary action</p>

@@ -442,6 +442,130 @@ body {
 .theme-option.theme-orange::before { background-color: #D88A4D; }
 .theme-option.theme-purple::before { background-color: #9D71C7; }
 
+/* Game History Styles */
+.history-content {
+    margin-top: 1rem;
+}
+
+.difficulty-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.tab-btn {
+    background: var(--button-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.tab-btn:hover {
+    background-color: var(--button-hover);
+}
+
+.tab-btn.active {
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+    border-color: var(--primary-color);
+}
+
+.history-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--button-bg);
+    border-radius: 8px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-label {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.stat-value {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.top-times h4 {
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+}
+
+.times-list {
+    max-height: 200px;
+    overflow-y: auto;
+    background: var(--button-bg);
+    border-radius: 8px;
+    padding: 0.75rem;
+}
+
+.time-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.9rem;
+}
+
+.time-entry:last-child {
+    border-bottom: none;
+}
+
+.time-rank {
+    font-weight: bold;
+    color: var(--primary-color);
+    min-width: 30px;
+}
+
+.time-value {
+    font-weight: 500;
+}
+
+.time-date {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.no-times {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-color);
+    opacity: 0.6;
+    font-style: italic;
+}
+
+.clear-history-btn {
+    background: var(--tile-red);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    color: var(--bg-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 1rem;
+    width: 100%;
+    font-weight: 500;
+}
+
+.clear-history-btn:hover {
+    opacity: 0.8;
+    transform: translateY(-1px);
+}
+
 /* Settings Panel */
 .settings-panel {
     position: fixed;
@@ -656,6 +780,20 @@ body {
     
     .overlay-content {
         padding: 1.5rem;
+    }
+    
+    .difficulty-tabs {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .tab-btn {
+        width: 100%;
+    }
+    
+    .history-stats {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
     }
 }
 
