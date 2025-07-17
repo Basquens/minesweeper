@@ -183,17 +183,24 @@ class MinesweeperGame {
     
     updateToggleButton() {
         const toggleBtn = document.getElementById('flag-toggle-btn');
-        const settingsBtn = document.getElementById('settings-btn');
         
         if (this.settings.primaryAction === 'flag') {
             toggleBtn.classList.add('active');
             toggleBtn.textContent = '🚩';
+            toggleBtn.title = 'Modo: Bandeira (primário), Revelar (secundário)';
         } else {
             toggleBtn.classList.remove('active');
-            toggleBtn.textContent = '🚩';
+            toggleBtn.textContent = '💣';
+            toggleBtn.title = 'Modo: Revelar (primário), Bandeira (secundário)';
         }
         
-        document.querySelector(`input[name="primary-action"][value="${this.settings.primaryAction}"]`).checked = true;
+        // Atualizar também o input correspondente nas configurações
+        const primaryActionInputs = document.querySelectorAll('input[name="primary-action"]');
+        primaryActionInputs.forEach(input => {
+            if (input.value === this.settings.primaryAction) {
+                input.checked = true;
+            }
+        });
     }
     
     triggerVibration() {
