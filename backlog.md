@@ -91,6 +91,36 @@
    - Especialmente útil para analisar estratégias e aprender com erros
    - Funcionalidade opcional que pode ser desabilitada nas configurações
 
+2. Implementar tabuleiro customizado
+   - Permitir ao usuário definir dimensões e quantidade de bombas
+   - Interface de configuração personalizada
+   - Funcionalidade:
+     - Sliders ou inputs para largura (5-50 tiles)
+     - Sliders ou inputs para altura (5-50 tiles)
+     - Slider ou input para quantidade de bombas
+     - Validação automática: mínimo 1 bomba, máximo 80% dos tiles
+     - Preview em tempo real das configurações
+     - Cálculo automático da densidade de bombas (%)
+   - Interface intuitiva:
+     - Tela dedicada de "Tabuleiro Customizado" na seleção de dificuldade
+     - Indicadores visuais da dificuldade estimada (Fácil/Médio/Difícil/Extremo)
+     - Botão "Testar Configuração" para jogar uma partida de teste
+     - Salvar configurações customizadas favoritas (até 5 presets)
+     - Opção de nomear presets personalizados
+   - Limitações técnicas:
+     - Considerar performance em dispositivos móveis
+     - Ajuste automático do tamanho dos tiles para telas pequenas
+     - Limite máximo baseado na resolução da tela
+     - Aviso quando configuração pode impactar performance
+   - Integração com sistema existente:
+     - Histórico separado para jogos customizados
+     - Estatísticas específicas para cada preset customizado
+     - Opção de exportar/importar configurações
+   - Recursos adicionais:
+     - Gerador de configuração aleatória
+     - Sugestões de configurações populares
+     - Calculadora de dificuldade baseada em densidade
+
 # V4
 
 1. Implementar leaderboard global estilo arcade
