@@ -712,9 +712,15 @@ class MinesweeperGame {
         }
     }
     
+    formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    }
+    
     updateDisplay() {
         document.getElementById('mines-remaining').textContent = this.minesRemaining;
-        document.getElementById('timer-display').textContent = this.timer.toString().padStart(3, '0');
+        document.getElementById('timer-display').textContent = this.formatTime(this.timer);
     }
     
     openSettings() {
@@ -732,7 +738,7 @@ class MinesweeperGame {
         
         if (won) {
             title.textContent = 'Congratulations!';
-            message.textContent = `You won in ${this.timer} seconds!`;
+            message.textContent = `You won in ${this.formatTime(this.timer)}!`;
             overlay.classList.remove('hidden');
         } else {
             title.textContent = 'Game Over';
