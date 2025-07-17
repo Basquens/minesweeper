@@ -110,6 +110,13 @@ class MinesweeperGame {
         document.querySelector(`input[name="primary-action"][value="${this.settings.primaryAction}"]`).checked = true;
     }
     
+    triggerVibration() {
+        if (navigator.vibrate) {
+            // 50ms vibration with medium intensity
+            navigator.vibrate(50);
+        }
+    }
+    
     setupEventListeners() {
         document.getElementById('new-game-btn').addEventListener('click', () => this.newGame());
         document.getElementById('difficulty-select').addEventListener('change', (e) => this.changeDifficulty(e.target.value));
@@ -483,7 +490,7 @@ class MinesweeperGame {
                 holdTimeout = setTimeout(() => {
                     isHolding = true;
                     handleSecondaryAction();
-                    navigator.vibrate && navigator.vibrate(50);
+                    this.triggerVibration();
                 }, this.settings.holdDelay);
             }
         });
