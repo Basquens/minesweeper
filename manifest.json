@@ -1,0 +1,25 @@
+{
+    "name": "Minesweeper",
+    "short_name": "Minesweeper",
+    "description": "A minimalist minesweeper game that works offline",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "orientation": "any",
+    "icons": [
+        {
+            "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMTYiIGZpbGw9IiNmNWY1ZjUiLz4KPHN2ZyB4PSI0OCIgeT0iNDgiIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiI+CjxyZWN0IHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgcng9IjgiIGZpbGw9IiNhOGU2Y2YiLz4KPHN2ZyB4PSIzMiIgeT0iMzIiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+CjxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjQiIGZpbGw9IiNmZmFhYTUiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiPgo8Y2lyY2xlIGN4PSI4IiBjeT0iOCIgcj0iNCIgZmlsbD0iIzMzMzMzMyIvPgo8L3N2Zz4KPC9zdmc+Cjwvc3ZnPgo8L3N2Zz4K",
+            "sizes": "192x192",
+            "type": "image/svg+xml"
+        },
+        {
+            "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iNDgiIGZpbGw9IiNmNWY1ZjUiLz4KPHN2ZyB4PSIxMjgiIHk9IjEyOCIgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiPgo8cmVjdCB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgcng9IjIwIiBmaWxsPSIjYThlNmNmIi8+CjxzdmcgeD0iODQiIHk9Ijg0IiB3aWR0aD0iODgiIGhlaWdodD0iODgiPgo8cmVjdCB3aWR0aD0iODgiIGhlaWdodD0iODgiIHJ4PSIxMCIgZmlsbD0iI2ZmYWFhNSIvPgo8c3ZnIHg9IjIwIiB5PSIyMCIgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4Ij4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyNCIgcj0iMTIiIGZpbGw9IiMzMzMzMzMiLz4KPC9zdmc+Cjwvc3ZnPgo8L3N2Zz4KPC9zdmc+",
+            "sizes": "512x512",
+            "type": "image/svg+xml"
+        }
+    ],
+    "categories": ["games"],
+    "lang": "en",
+    "dir": "ltr"
+}

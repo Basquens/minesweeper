@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Minesweeper</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+    <div class="app-container">
+        <header class="game-header">
+            <div class="game-info">
+                <div class="mines-count">
+                    <span class="icon">💣</span>
+                    <span id="mines-remaining">10</span>
+                </div>
+                <div class="timer">
+                    <span class="icon">⏱️</span>
+                    <span id="timer-display">000</span>
+                </div>
+                <button id="settings-btn" class="settings-btn">⚙️</button>
+            </div>
+            <div class="game-controls">
+                <button id="new-game-btn" class="new-game-btn">New Game</button>
+                <div class="difficulty-selector">
+                    <select id="difficulty-select">
+                        <option value="beginner">Beginner (9x9)</option>
+                        <option value="intermediate">Intermediate (16x16)</option>
+                        <option value="expert">Expert (30x16)</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <main class="game-main">
+            <div class="game-board-container">
+                <div id="game-board" class="game-board"></div>
+            </div>
+        </main>
+
+        <div id="settings-panel" class="settings-panel hidden">
+            <div class="settings-content">
+                <div class="settings-header">
+                    <h2>Settings</h2>
+                    <button id="close-settings" class="close-btn">×</button>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Theme</h3>
+                    <div class="theme-toggle">
+                        <input type="radio" id="light-theme" name="theme" value="light" checked>
+                        <label for="light-theme">Light</label>
+                        <input type="radio" id="dark-theme" name="theme" value="dark">
+                        <label for="dark-theme">Dark</label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Primary Action</h3>
+                    <div class="action-toggle">
+                        <input type="radio" id="reveal-primary" name="primary-action" value="reveal" checked>
+                        <label for="reveal-primary">Reveal Tile</label>
+                        <input type="radio" id="flag-primary" name="primary-action" value="flag">
+                        <label for="flag-primary">Flag Tile</label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Hold Delay</h3>
+                    <div class="delay-setting">
+                        <label for="hold-delay">Secondary action delay: <span id="delay-value">500</span>ms</label>
+                        <input type="range" id="hold-delay" min="200" max="1000" value="500" step="50">
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Tile Color</h3>
+                    <div class="tile-color-selector">
+                        <input type="radio" id="color-green" name="tile-color" value="green" checked>
+                        <label for="color-green" class="color-option" data-color="green"></label>
+                        
+                        <input type="radio" id="color-blue" name="tile-color" value="blue">
+                        <label for="color-blue" class="color-option" data-color="blue"></label>
+                        
+                        <input type="radio" id="color-red" name="tile-color" value="red">
+                        <label for="color-red" class="color-option" data-color="red"></label>
+                        
+                        <input type="radio" id="color-yellow" name="tile-color" value="yellow">
+                        <label for="color-yellow" class="color-option" data-color="yellow"></label>
+                        
+                        <input type="radio" id="color-orange" name="tile-color" value="orange">
+                        <label for="color-orange" class="color-option" data-color="orange"></label>
+                        
+                        <input type="radio" id="color-teal" name="tile-color" value="teal">
+                        <label for="color-teal" class="color-option" data-color="teal"></label>
+                        
+                        <input type="radio" id="color-purple" name="tile-color" value="purple">
+                        <label for="color-purple" class="color-option" data-color="purple"></label>
+                        
+                        <input type="radio" id="color-pink" name="tile-color" value="pink">
+                        <label for="color-pink" class="color-option" data-color="pink"></label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Board Orientation</h3>
+                    <div class="orientation-toggle">
+                        <input type="radio" id="orientation-auto" name="board-orientation" value="auto" checked>
+                        <label for="orientation-auto">Auto</label>
+                        <input type="radio" id="orientation-horizontal" name="board-orientation" value="horizontal">
+                        <label for="orientation-horizontal">Horizontal</label>
+                        <input type="radio" id="orientation-vertical" name="board-orientation" value="vertical">
+                        <label for="orientation-vertical">Vertical</label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Instructions</h3>
+                    <div class="instructions">
+                        <p><strong>Desktop:</strong> Left click = primary action, Right click = secondary action</p>
+                        <p><strong>Mobile:</strong> Tap = primary action, Hold = secondary action</p>
+                        <p><strong>Zoom:</strong> Pinch to zoom on mobile, scroll wheel on desktop</p>
+                        <p><strong>Move:</strong> Drag to move the board around</p>
+                        <p><strong>Chord:</strong> Click on revealed numbers to auto-flag or auto-reveal</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="game-overlay" class="game-overlay hidden">
+            <div class="overlay-content">
+                <div class="game-result">
+                    <h2 id="result-title">Game Over</h2>
+                    <p id="result-message">Better luck next time!</p>
+                    <div class="overlay-buttons">
+                        <button id="play-again-btn" class="play-again-btn">Play Again</button>
+                        <button id="view-board-btn" class="view-board-btn">View Board</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
