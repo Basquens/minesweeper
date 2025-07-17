@@ -63,6 +63,28 @@
    - Design responsivo que funciona bem em todas as telas
    - Temas escuro e claro devem ter tratamento adequado da transparência
 
+4. Implementar funcionalidades de acessibilidade
+   - Modo alto contraste para deficientes visuais
+   - Suporte completo para leitores de tela
+   - Navegação por teclado com indicadores visuais
+   - Sons distintivos para diferentes ações
+   - Funcionalidade:
+     - Teclas de seta para navegar pelo tabuleiro
+     - Enter para revelar, Espaço para bandeira
+     - Anúncio por voz do conteúdo de cada tile
+     - Descrição sonora das ações realizadas
+     - Modo alto contraste com cores mais vibrantes
+   - Configurações de acessibilidade:
+     - Toggle para ativar/desativar cada funcionalidade
+     - Ajuste de volume dos sons
+     - Velocidade da narração
+     - Escolha de voz (se disponível no sistema)
+   - Compatibilidade:
+     - Testar com NVDA, JAWS, VoiceOver
+     - Seguir padrões WCAG 2.1
+     - Atributos ARIA apropriados
+     - Indicadores de foco visíveis
+
 # V3
 
 1. Implementar timelapse do último jogo finalizado
@@ -121,6 +143,33 @@
      - Sugestões de configurações populares
      - Calculadora de dificuldade baseada em densidade
 
+3. Implementar sistema de seeds e análise avançada de jogos
+   - Sistema de seeds para reproduzir jogos idênticos
+   - Análise de eficiência de movimentos (modo assistente)
+   - Análise post-mortem de jogos perdidos
+   - Funcionalidade:
+     - Gerar seed único para cada jogo
+     - Exibir seed na tela de conclusão do jogo
+     - Salvar seed no histórico de jogos
+     - Opção de jogar com seed específico
+     - Input para inserir seed personalizado
+   - Análise de eficiência:
+     - Contador de movimentos desnecessários
+     - Indicador de eficiência (% de movimentos úteis)
+     - Heatmap de cliques no tabuleiro
+     - Tempo médio por jogada
+     - Estatísticas de uso de bandeiras vs revelações
+   - Análise post-mortem:
+     - Analisar último jogo perdido
+     - Identificar a bomba que causou a derrota
+     - Mostrar qual era a melhor estratégia naquele momento
+     - Destacar pistas que foram ignoradas
+     - Sugerir padrões que poderiam ter sido aplicados
+   - Integração com assistente:
+     - Funcionalidade opcional (não afeta leaderboards)
+     - Avisos quando análise está ativa
+     - Opção de desativar para jogos competitivos
+
 # V4
 
 1. Implementar leaderboard global estilo arcade
@@ -152,3 +201,58 @@
    - Design nostálgico inspirado em arcades dos anos 80/90
    - Cores vibrantes e fonte pixelada para entrada de nome
    - Funcionalidade totalmente offline (sem servidor)
+
+2. Implementar modo Tutorial/Ensino e assistente de padrões
+   - Sistema de tutoriais interativos para iniciantes
+   - Assistente de padrões com dicas contextuais
+   - Modo de ensino que não afeta estatísticas
+   - Funcionalidade:
+     - Tutoriais passo-a-passo dos conceitos básicos
+     - Explicação interativa dos números e padrões
+     - Demonstração de técnicas avançadas (chording, etc.)
+     - Lições sobre padrões comuns (1-2-1, cantos, bordas)
+     - Quiz interativo ao final de cada lição
+   - Assistente de padrões:
+     - Detectar padrões conhecidos no tabuleiro atual
+     - Destacar visualmente padrões encontrados
+     - Sugerir próximas jogadas lógicas
+     - Explicar o raciocínio por trás de cada sugestão
+     - Modo "dica" que mostra apenas o próximo movimento
+   - Restrições importantes:
+     - Jogos com assistente ativo NÃO contam para leaderboards
+     - Jogos com assistente NÃO contam para histórico de melhores tempos
+     - Aviso claro quando assistente está ativo
+     - Opção de desativar assistente durante o jogo
+   - Interface dedicada:
+     - Menu de tutoriais separado
+     - Progresso de conclusão dos tutoriais
+     - Biblioteca de padrões para consulta
+     - Modo prática com diferentes cenários
+
+# V5
+
+1. Implementar sistema de conquistas
+   - Sistema de badges e conquistas baseado em realizações
+   - Conquistas variadas para diferentes estilos de jogo
+   - Funcionalidade:
+     - Rastreamento automático de estatísticas relevantes
+     - Notificações quando conquistas são desbloqueadas
+     - Galeria de conquistas com descrições
+     - Indicador de progresso para conquistas incrementais
+   - Tipos de conquistas:
+     - Conquistas de quantidade (100 vitórias, 1000 jogos, etc.)
+     - Conquistas de habilidade (ganhar sem usar bandeiras, etc.)
+     - Conquistas de velocidade (terminar em menos de X segundos)
+     - Conquistas de consistência (X vitórias seguidas)
+     - Conquistas especiais (primeiro jogo, melhor tempo pessoal, etc.)
+     - Conquistas de exploração (jogar todas as dificuldades)
+   - Exemplos específicos:
+     - "Primeira Vitória" - Complete seu primeiro jogo
+     - "Velocista" - Complete beginner em menos de 30 segundos
+     - "Sem Bandeiras" - Ganhe um jogo sem usar bandeiras
+     - "Centenário" - Complete 100 jogos
+     - "Streak Master" - Ganhe 10 jogos seguidos
+     - "Especialista" - Ganhe em todas as dificuldades
+     - "Perfeccionista" - Complete um jogo com 100% de eficiência
+   - Não incluir sistema de progressão ou níveis de jogador
+   - Foco apenas em marcos e realizações específicas
