@@ -29,3 +29,18 @@
    - Não afeta o contador de minas restantes (apenas bandeiras fazem isso)
    - Salvar preferência nas configurações se o usuário quer usar ponto de interrogação
    - Adicionar nas instruções de jogo a explicação da funcionalidade
+
+2. Implementar modo "No Guess" (sem adivinhação)
+   - Garantir que todos os jogos gerados possam ser resolvidos usando apenas lógica
+   - Algoritmo para validar se o tabuleiro gerado é solucionável sem adivinhação
+   - Se o tabuleiro não for solucionável, regenerar automaticamente
+   - Configuração opcional nas settings para ativar/desativar o modo "No Guess"
+   - Indicador visual quando o modo está ativo (ex: ícone especial no header)
+   - Funcionalidade:
+     - Analisa todas as possibilidades lógicas antes de gerar o tabuleiro final
+     - Usa algoritmos de satisfação de restrições (CSP) para validar
+     - Garante que sempre há pelo menos uma jogada lógica disponível
+     - Evita situações onde o jogador precisa "chutar" para continuar
+   - Pode impactar ligeiramente o tempo de geração do jogo
+   - Especialmente útil para jogadores que preferem puzzles puramente lógicos
+   - Adicionar explicação nas instruções sobre o que é o modo "No Guess"
