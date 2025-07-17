@@ -90,3 +90,35 @@
      - Reprodução eficiente sem recarregar página
    - Especialmente útil para analisar estratégias e aprender com erros
    - Funcionalidade opcional que pode ser desabilitada nas configurações
+
+# V4
+
+1. Implementar leaderboard global estilo arcade
+   - Sistema de ranking com identificação de 3 letras
+   - Leaderboard separado por dificuldade (Beginner, Intermediate, Expert)
+   - Armazenar top 50 tempos para cada dificuldade
+   - Funcionalidade:
+     - Ao finalizar jogo com vitória, verificar se tempo entra no top 50
+     - Se classificado, mostrar popup para inserir iniciais (3 letras)
+     - Interface estilo arcade clássico para entrada de nome
+     - Validação de caracteres (apenas letras A-Z)
+     - Possibilidade de usar setas/teclado para selecionar letras
+   - Interface do leaderboard:
+     - Tela dedicada acessível pelo menu principal
+     - Tabs para alternar entre dificuldades
+     - Ranking numerado (#1, #2, #3, etc.)
+     - Mostrar: posição, iniciais, tempo, data
+     - Destacar entrada do jogador atual se estiver no ranking
+     - Animação especial para top 3 posições
+   - Persistência de dados:
+     - Salvar leaderboard no localStorage
+     - Opção de exportar/importar dados do leaderboard
+     - Backup automático dos dados
+   - Recursos especiais:
+     - Animação de "NEW RECORD!" quando bater recorde
+     - Som/vibração especial para novos recordes
+     - Indicador visual quando jogador está próximo do seu recorde
+     - Opção de resetar leaderboard nas configurações
+   - Design nostálgico inspirado em arcades dos anos 80/90
+   - Cores vibrantes e fonte pixelada para entrada de nome
+   - Funcionalidade totalmente offline (sem servidor)
