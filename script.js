@@ -44,6 +44,7 @@ class MinesweeperGame {
         };
         
         this.showStartScreen = true;
+        this.deferredPrompt = null;
         
         this.init();
     }
@@ -52,6 +53,7 @@ class MinesweeperGame {
         this.loadSettings();
         this.loadGameHistory();
         this.setupEventListeners();
+        this.setupPWAInstallation();
         this.applyTheme();
         this.applyTileColor();
         this.applyColorTheme();
@@ -293,6 +295,42 @@ class MinesweeperGame {
         });
         
         this.setupZoomControls();
+    }
+    
+    setupPWAInstallation() {
+        const installBtn = document.getElementById('install-pwa-btn');
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            this.deferredPrompt = e;
+            installBtn.classList.remove('hidden');
+        });
+        
+        installBtn.addEventListener('click', async () => {
+            if (!this.deferredPrompt) {
+                return;
+            }
+            
+            this.deferredPrompt.prompt();
+            const { outcome } = await this.deferredPrompt.userChoice;
+            
+            if (outcome === 'accepted') {
+                console.log('PWA installed');
+            }
+            
+            this.deferredPrompt = null;
+            installBtn.classList.add('hidden');
+        });
+        
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            installBtn.classList.add('hidden');
+        });
+        
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            console.log('Running as installed PWA');
+            installBtn.classList.add('hidden');
+        }
     }
     
     setupZoomControls() {

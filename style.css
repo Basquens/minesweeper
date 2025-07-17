@@ -701,6 +701,100 @@ body {
     transform: translateY(-1px);
 }
 
+/* PWA Installation Styles */
+.pwa-section {
+    margin-top: 1rem;
+}
+
+.pwa-description {
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    text-align: center;
+    padding: 1rem;
+    background: var(--button-bg);
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.install-button-container {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.install-pwa-btn {
+    background: var(--primary-color);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 12px;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 1rem;
+}
+
+.install-pwa-btn:hover {
+    background: var(--primary-active);
+    transform: translateY(-2px);
+}
+
+.install-instructions {
+    text-align: left;
+}
+
+.instruction-group {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--button-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.instruction-group h4 {
+    margin-bottom: 0.75rem;
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+.instruction-group ol {
+    margin-left: 1.2rem;
+    line-height: 1.6;
+}
+
+.instruction-group li {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.instruction-group .icon {
+    font-size: 1.1rem;
+    margin: 0 0.25rem;
+}
+
+.pwa-benefits {
+    padding: 1rem;
+    background: var(--button-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.pwa-benefits h4 {
+    margin-bottom: 0.75rem;
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+.pwa-benefits ul {
+    margin-left: 1.2rem;
+    line-height: 1.6;
+}
+
+.pwa-benefits li {
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+}
+
 /* Settings Panel */
 .settings-panel {
     position: fixed;
@@ -946,6 +1040,19 @@ body {
     
     .difficulty-card {
         padding: 1.5rem 1rem;
+    }
+    
+    .instruction-group {
+        padding: 0.75rem;
+    }
+    
+    .instruction-group ol {
+        margin-left: 1rem;
+    }
+    
+    .install-pwa-btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
     }
 }
 
