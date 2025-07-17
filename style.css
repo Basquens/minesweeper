@@ -309,7 +309,7 @@ body {
     font-weight: bold;
 }
 
-.back-btn, .theme-btn {
+.back-btn, .header-btn {
     background: var(--button-bg);
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -324,8 +324,13 @@ body {
     justify-content: center;
 }
 
-.back-btn:hover, .theme-btn:hover {
+.back-btn:hover, .header-btn:hover {
     background-color: var(--button-hover);
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.5rem;
 }
 
 .game-controls {

@@ -158,7 +158,7 @@ class MinesweeperGame {
         this.applyTileColor();
         this.applyBoardOrientation();
         this.applyColorTheme();
-        this.updateToggleButton();
+        this.updateActionButtons();
     }
     
     applyTheme() {
@@ -181,17 +181,23 @@ class MinesweeperGame {
         document.body.classList.add(`theme-${this.settings.colorTheme}`);
     }
     
-    updateToggleButton() {
-        const toggleBtn = document.getElementById('flag-toggle-btn');
+    updateActionButtons() {
+        const revealBtn = document.getElementById('reveal-btn');
+        const flagBtn = document.getElementById('flag-btn');
         
+        // Remover classe active de ambos os botões
+        revealBtn.classList.remove('active');
+        flagBtn.classList.remove('active');
+        
+        // Adicionar classe active ao botão da ação primária
         if (this.settings.primaryAction === 'flag') {
-            toggleBtn.classList.add('active');
-            toggleBtn.textContent = '🚩';
-            toggleBtn.title = 'Modo: Bandeira (primário), Revelar (secundário)';
+            flagBtn.classList.add('active');
+            revealBtn.title = 'Revelar (secundário - segurar)';
+            flagBtn.title = 'Bandeira (primário - tocar)';
         } else {
-            toggleBtn.classList.remove('active');
-            toggleBtn.textContent = '💣';
-            toggleBtn.title = 'Modo: Revelar (primário), Bandeira (secundário)';
+            revealBtn.classList.add('active');
+            revealBtn.title = 'Revelar (primário - tocar)';
+            flagBtn.title = 'Bandeira (secundário - segurar)';
         }
         
         // Atualizar também o input correspondente nas configurações
@@ -238,6 +244,7 @@ class MinesweeperGame {
         document.querySelectorAll('input[name="primary-action"]').forEach(input => {
             input.addEventListener('change', (e) => {
                 this.settings.primaryAction = e.target.value;
+                this.updateActionButtons();
                 this.saveSettings();
             });
         });
@@ -272,9 +279,15 @@ class MinesweeperGame {
             });
         });
         
-        document.getElementById('flag-toggle-btn').addEventListener('click', () => {
-            this.settings.primaryAction = this.settings.primaryAction === 'reveal' ? 'flag' : 'reveal';
-            this.updateToggleButton();
+        document.getElementById('reveal-btn').addEventListener('click', () => {
+            this.settings.primaryAction = 'reveal';
+            this.updateActionButtons();
+            this.saveSettings();
+        });
+        
+        document.getElementById('flag-btn').addEventListener('click', () => {
+            this.settings.primaryAction = 'flag';
+            this.updateActionButtons();
             this.saveSettings();
         });
         
