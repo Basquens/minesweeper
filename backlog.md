@@ -3,6 +3,17 @@
 1. Alterar o layout para bater melhor com o esperado, utilizar o arquivo layout_guide.md como modelo
 1. Adicionar uma opção para salvar o app como um app no celular que fique salvo como WPA
 1. Mudar o relógio para mostrar os valores em minutos:segundos
+1. Garantir que o primeiro clique sempre seja em área vazia (sem minas e sem números)
+   - O primeiro clique deve sempre abrir uma área clara
+   - Nunca deve ser uma mina ou um número
+   - Deve abrir uma região interessante para começar o jogo
+   - Regenerar posicionamento de minas se necessário para garantir área vazia
+1. Melhorar detecção de gestos no mobile para evitar ações acidentais
+   - Distinguir entre movimentação/zoom e ações de jogo
+   - Cancelar ação de revelar/bandeira se detectar movimento de drag
+   - Cancelar ação se detectar pinch-to-zoom
+   - Implementar threshold de movimento para evitar ativações acidentais
+   - Melhorar responsividade do toque sem sacrificar precisão
 1. Adicionar um toggle de Bomba / Bandeira em baixo do relógio que muda entre a opção primaria e secundaria
 1. Adicionar vibração no final do long press da ação secundaria no celular
 1. Registrar o histórico dos jogos anteriores, qual foi o tempo de conclusão e em qual data.
