@@ -312,6 +312,10 @@ class MinesweeperGame {
                 this.updateHistoryDisplay(difficulty);
             }
         });
+
+        document.getElementById('clear-cache-btn').addEventListener('click', () => {
+            this.clearCacheAndReload();
+        });
         
         this.setupZoomControls();
     }
@@ -1179,6 +1183,60 @@ class MinesweeperGame {
         this.boardConfig = this.difficulties[difficulty];
         this.hideStartScreen();
         this.newGame();
+    }
+    
+    async clearCacheAndReload() {
+        const confirmed = confirm(
+            'This will clear all cached data and reload the page to ensure you have the latest version.\n\n' +
+            'Your game settings and history will be preserved.\n\n' +
+            'Continue?'
+        );
+        
+        if (!confirmed) return;
+        
+        try {
+            // Clear service worker caches
+            if ('caches' in window) {
+                const cacheNames = await caches.keys();
+                await Promise.all(
+                    cacheNames.map(cacheName => caches.delete(cacheName))
+                );
+                console.log('All caches cleared');
+            }
+            
+            // Unregister service worker
+            if ('serviceWorker' in navigator) {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                await Promise.all(
+                    registrations.map(registration => registration.unregister())
+                );
+                console.log('Service workers unregistered');
+            }
+            
+            // Add cache-busting timestamp to force reload
+            const currentUrl = new URL(window.location);
+            currentUrl.searchParams.set('v', Date.now().toString());
+            
+            // Show loading indicator
+            const button = document.getElementById('clear-cache-btn');
+            const originalText = button.innerHTML;
+            button.innerHTML = '⏳ Clearing cache...';
+            button.disabled = true;
+            
+            // Small delay to ensure cleanup completes
+            setTimeout(() => {
+                window.location.replace(currentUrl.toString());
+            }, 1000);
+            
+        } catch (error) {
+            console.error('Error clearing cache:', error);
+            alert('Failed to clear cache. Please try reloading the page manually.');
+            
+            // Reset button
+            const button = document.getElementById('clear-cache-btn');
+            button.innerHTML = '🔄 Clear Cache & Reload';
+            button.disabled = false;
+        }
     }
 }
 
