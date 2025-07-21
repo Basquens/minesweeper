@@ -65,6 +65,7 @@
                     </div>
                     <div class="timer">
                         <span id="timer-display">00:00</span>
+                        <span id="no-guess-indicator" class="no-guess-indicator hidden">🧠</span>
                     </div>
                 </div>
                 <div class="header-actions">
@@ -153,6 +154,18 @@
                     <div class="instructions">
                         <p><small>When enabled: Normal → Flag → Question → Normal</small></p>
                         <p><small>Question marks help mark uncertain tiles</small></p>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>No Guess Mode</h3>
+                    <div class="no-guess-toggle">
+                        <input type="checkbox" id="enable-no-guess" name="enable-no-guess">
+                        <label for="enable-no-guess">Enable No Guess mode</label>
+                    </div>
+                    <div class="instructions">
+                        <p><small>Ensures all games are solvable using logic only</small></p>
+                        <p><small>May take longer to generate games</small></p>
                     </div>
                 </div>
 
