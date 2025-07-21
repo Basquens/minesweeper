@@ -958,6 +958,17 @@ class MinesweeperGame {
     }
     
     showStartScreen() {
+        // Limpar timer se estiver rodando
+        this.clearTimer();
+        
+        // Resetar estado do jogo
+        this.gameState = 'playing';
+        this.timer = 0;
+        
+        // Esconder overlay se estiver visível
+        this.hideOverlay();
+        
+        // Mostrar tela inicial
         this.displayStartScreen();
     }
     
