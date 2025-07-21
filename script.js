@@ -13,7 +13,8 @@ class MinesweeperGame {
             primaryAction: 'reveal',
             holdDelay: 500,
             boardOrientation: 'vertical',
-            colorTheme: 'blue'
+            colorTheme: 'blue',
+            enableQuestionMarks: false
         };
         
         this.themeMapping = {
@@ -147,6 +148,7 @@ class MinesweeperGame {
         document.querySelector(`input[name="primary-action"][value="${this.settings.primaryAction}"]`).checked = true;
         document.querySelector(`input[name="board-orientation"][value="${this.settings.boardOrientation}"]`).checked = true;
         document.querySelector(`input[name="color-theme"][value="${this.settings.colorTheme}"]`).checked = true;
+        document.getElementById('enable-question-marks').checked = this.settings.enableQuestionMarks;
         document.getElementById('hold-delay').value = this.settings.holdDelay;
         document.getElementById('delay-value').textContent = this.settings.holdDelay;
         this.applyUnifiedTheme();
@@ -262,6 +264,11 @@ class MinesweeperGame {
                 this.applyUnifiedTheme();
                 this.saveSettings();
             });
+        });
+        
+        document.getElementById('enable-question-marks').addEventListener('change', (e) => {
+            this.settings.enableQuestionMarks = e.target.checked;
+            this.saveSettings();
         });
         
         document.getElementById('reveal-btn').addEventListener('click', () => {
@@ -523,6 +530,7 @@ class MinesweeperGame {
             isMine: false,
             isRevealed: false,
             isFlagged: false,
+            isQuestioned: false,
             neighborMines: 0
         })));
         
@@ -719,8 +727,27 @@ class MinesweeperGame {
         
         if (cell.isRevealed) return;
         
-        cell.isFlagged = !cell.isFlagged;
-        this.minesRemaining += cell.isFlagged ? -1 : 1;
+        if (this.settings.enableQuestionMarks) {
+            // Sistema de 3 estados: Normal → Bandeira → Ponto de Interrogação → Normal
+            if (!cell.isFlagged && !cell.isQuestioned) {
+                // Normal → Bandeira
+                cell.isFlagged = true;
+                this.minesRemaining--;
+            } else if (cell.isFlagged && !cell.isQuestioned) {
+                // Bandeira → Ponto de Interrogação
+                cell.isFlagged = false;
+                cell.isQuestioned = true;
+                this.minesRemaining++;
+            } else if (!cell.isFlagged && cell.isQuestioned) {
+                // Ponto de Interrogação → Normal
+                cell.isQuestioned = false;
+            }
+        } else {
+            // Sistema de 2 estados tradicional: Normal ↔ Bandeira
+            cell.isFlagged = !cell.isFlagged;
+            this.minesRemaining += cell.isFlagged ? -1 : 1;
+        }
+        
         this.updateTile(x, y);
         this.updateDisplay();
     }
@@ -806,6 +833,9 @@ class MinesweeperGame {
         if (cell.isFlagged) {
             tile.classList.add('flagged');
             tile.textContent = '🚩';
+        } else if (cell.isQuestioned) {
+            tile.classList.add('questioned');
+            tile.textContent = '❓';
         } else if (cell.isRevealed) {
             tile.classList.add('revealed');
             if (cell.isMine) {

@@ -145,6 +145,18 @@
                 </div>
 
                 <div class="settings-section">
+                    <h3>Question Marks</h3>
+                    <div class="question-toggle">
+                        <input type="checkbox" id="enable-question-marks" name="enable-question-marks">
+                        <label for="enable-question-marks">Enable question mark (❓) tiles</label>
+                    </div>
+                    <div class="instructions">
+                        <p><small>When enabled: Normal → Flag → Question → Normal</small></p>
+                        <p><small>Question marks help mark uncertain tiles</small></p>
+                    </div>
+                </div>
+
+                <div class="settings-section">
                     <h3>Color Theme</h3>
                     <div class="unified-color-selector">
                         <input type="radio" id="theme-blue" name="color-theme" value="blue" checked>
@@ -298,6 +310,9 @@
                         <p><strong>Zoom:</strong> Pinch to zoom on mobile, scroll wheel on desktop</p>
                         <p><strong>Move:</strong> Drag to move the board around</p>
                         <p><strong>Chord:</strong> Click on revealed numbers to auto-flag or auto-reveal</p>
+                        <p><strong>Question marks:</strong> When enabled, cycle through Normal → Flag (🚩) → Question (❓) → Normal</p>
+                        <p><strong>Flags (🚩):</strong> Mark suspected mines. Affects mine counter.</p>
+                        <p><strong>Questions (❓):</strong> Mark uncertain tiles. Can be revealed. Don't affect counter.</p>
                     </div>
                 </div>
             </div>

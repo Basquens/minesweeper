@@ -472,6 +472,12 @@ body {
     position: relative;
 }
 
+.tile.questioned {
+    background-color: var(--selected-tile-color);
+    position: relative;
+    opacity: 0.8;
+}
+
 .tile.mine {
     background-color: var(--tile-red);
 }
@@ -871,6 +877,24 @@ body {
 .theme-toggle input:checked + label, .action-toggle input:checked + label, .orientation-toggle input:checked + label {
     background-color: var(--border-color);
     color: var(--bg-color);
+}
+
+.question-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.question-toggle input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-color);
+}
+
+.question-toggle label {
+    cursor: pointer;
+    font-weight: 500;
 }
 
 .delay-setting {
