@@ -105,13 +105,6 @@
    - Implementar threshold de movimento para evitar ativações acidentais
    - Melhorar responsividade do toque sem sacrificar precisão
 
-5. Corrigir bug do botão de voltar que não está funcionando
-   - Implementar funcionalidade do botão "←" no header
-   - O botão deve retornar à tela inicial de seleção de dificuldade
-   - Garantir que funciona corretamente em todas as situações
-   - Testar navegação entre telas
-   - Verificar se o estado do jogo é preservado adequadamente
-
 # V3
 
 1. Implementar timelapse do último jogo finalizado
