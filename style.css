@@ -529,6 +529,15 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+/* Acessibilidade - Foco do teclado */
+.tile.keyboard-focus {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.8), 0 0 8px var(--primary-color);
+    z-index: 10;
+    position: relative;
+}
+
 .tile.revealed {
     background-color: var(--bg-color);
     cursor: default;
@@ -970,20 +979,20 @@ body {
     font-weight: 500;
 }
 
-.no-guess-toggle {
+.no-guess-toggle, .setting-toggle {
     display: flex;
     align-items: center;
     gap: 0.75rem;
     margin-bottom: 1rem;
 }
 
-.no-guess-toggle input[type="checkbox"] {
+.no-guess-toggle input[type="checkbox"], .setting-toggle input[type="checkbox"] {
     width: 18px;
     height: 18px;
     accent-color: var(--primary-color);
 }
 
-.no-guess-toggle label {
+.no-guess-toggle label, .setting-toggle label {
     cursor: pointer;
     font-weight: 500;
 }
@@ -1277,4 +1286,95 @@ body {
     .settings-content {
         max-height: 90vh;
     }
+}
+
+/* High Contrast Mode */
+body.high-contrast {
+    --bg-color: #000000;
+    --text-color: #FFFFFF;
+    --border-color: #FFFFFF;
+    --tile-bg: #333333;
+    --tile-border: #FFFFFF;
+    --tile-revealed: #000000;
+    --button-bg: #222222;
+    --button-hover: #444444;
+    --settings-bg: #111111;
+    --overlay-bg: rgba(255, 255, 255, 0.9);
+    --selected-tile-color: #FFFF00;
+    
+    /* High contrast tile colors */
+    --tile-closed: #444444;
+    --tile-closed-border: #FFFFFF;
+    --tile-flag: #FF0000;
+    --tile-opened: #000000;
+    --tile-mine-bg: #FF0000;
+    
+    /* High contrast primary colors */
+    --primary-color: #00FFFF;
+    --primary-active: #FFFF00;
+    
+    /* High contrast number colors */
+    --num-1-light: #00FFFF;
+    --num-2-light: #00FF00;
+    --num-3-light: #FFFF00;
+    --num-4-light: #FF8000;
+    --num-5-light: #FF0080;
+    --num-6-light: #FF0000;
+    --num-7-light: #8000FF;
+    --num-8-light: #FF00FF;
+    
+    --num-1-dark: #00FFFF;
+    --num-2-dark: #00FF00;
+    --num-3-dark: #FFFF00;
+    --num-4-dark: #FF8000;
+    --num-5-dark: #FF0080;
+    --num-6-dark: #FF0000;
+    --num-7-dark: #8000FF;
+    --num-8-dark: #FF00FF;
+}
+
+body.high-contrast .tile {
+    border: 2px solid var(--border-color);
+    font-weight: bold;
+}
+
+body.high-contrast .tile.revealed {
+    background-color: var(--tile-opened);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+body.high-contrast .tile.flagged {
+    background-color: var(--tile-flag);
+    color: #FFFFFF;
+}
+
+body.high-contrast .tile.mine {
+    background-color: var(--tile-mine-bg);
+    color: #FFFFFF;
+}
+
+body.high-contrast .game-header,
+body.high-contrast .settings-panel,
+body.high-contrast .start-screen {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+body.high-contrast button {
+    background-color: var(--button-bg);
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+}
+
+body.high-contrast button:hover {
+    background-color: var(--button-hover);
+    border-color: var(--primary-color);
+}
+
+body.high-contrast .keyboard-focus {
+    outline: 4px solid var(--primary-color);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--bg-color), 0 0 12px var(--primary-color);
 }

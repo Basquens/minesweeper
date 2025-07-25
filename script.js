@@ -15,7 +15,10 @@ class MinesweeperGame {
             boardOrientation: 'vertical',
             colorTheme: 'blue',
             enableQuestionMarks: false,
-            enableNoGuess: false
+            enableNoGuess: false,
+            enableKeyboardNavigation: true,
+            enableSounds: false,
+            highContrast: false
         };
         
         this.themeMapping = {
@@ -27,22 +30,34 @@ class MinesweeperGame {
         };
         
         this.difficulties = {
-            beginner: { width: 9, height: 9, mines: 10 },
-            intermediate: { width: 16, height: 16, mines: 40 },
-            expert: { width: 30, height: 16, mines: 99 }
+            easy: { width: 10, height: 7, mines: 10 },
+            medium: { width: 22, height: 12, mines: 40 },
+            hard: { width: 32, height: 18, mines: 100 },
+            huge: { width: 48, height: 27, mines: 220 },
+            extreme: { width: 32, height: 18, mines: 150 }
         };
         
-        this.currentDifficulty = 'beginner';
+        this.currentDifficulty = 'easy';
         this.boardConfig = this.difficulties[this.currentDifficulty];
         
         this.gameHistory = {
-            beginner: [],
-            intermediate: [],
-            expert: []
+            easy: [],
+            medium: [],
+            hard: [],
+            huge: [],
+            extreme: []
         };
         
-        this.showStartScreen = true;
+        this.shouldShowStartScreen = true;
         this.deferredPrompt = null;
+        
+        // Acessibilidade - navegação por teclado
+        this.keyboardNavigation = {
+            enabled: true,
+            currentX: 0,
+            currentY: 0,
+            focusVisible: false
+        };
         
         this.init();
     }
@@ -51,11 +66,12 @@ class MinesweeperGame {
         this.loadSettings();
         this.loadGameHistory();
         this.setupEventListeners();
+        this.setupKeyboardNavigation();
         this.setupPWAInstallation();
         this.applyTheme();
         this.applyUnifiedTheme();
         
-        if (this.showStartScreen) {
+        if (this.shouldShowStartScreen) {
             this.displayStartScreen();
         } else {
             this.newGame();
@@ -80,6 +96,7 @@ class MinesweeperGame {
             this.gameHistory = { ...this.gameHistory, ...JSON.parse(saved) };
         }
     }
+    
     
     saveGameHistory() {
         localStorage.setItem('minesweeper-history', JSON.stringify(this.gameHistory));
@@ -151,11 +168,25 @@ class MinesweeperGame {
         document.querySelector(`input[name="color-theme"][value="${this.settings.colorTheme}"]`).checked = true;
         document.getElementById('enable-question-marks').checked = this.settings.enableQuestionMarks;
         document.getElementById('enable-no-guess').checked = this.settings.enableNoGuess;
+        document.getElementById('enable-keyboard-nav').checked = this.settings.enableKeyboardNavigation;
+        document.getElementById('enable-sounds').checked = this.settings.enableSounds;
+        document.getElementById('high-contrast').checked = this.settings.highContrast;
         document.getElementById('hold-delay').value = this.settings.holdDelay;
         document.getElementById('delay-value').textContent = this.settings.holdDelay;
+        
+        this.keyboardNavigation.enabled = this.settings.enableKeyboardNavigation;
         this.applyUnifiedTheme();
         this.applyBoardOrientation();
         this.updateActionButtons();
+        this.applyHighContrast();
+    }
+    
+    applyHighContrast() {
+        if (this.settings.highContrast) {
+            document.body.classList.add('high-contrast');
+        } else {
+            document.body.classList.remove('high-contrast');
+        }
     }
     
     applyTheme() {
@@ -213,6 +244,168 @@ class MinesweeperGame {
         }
     }
     
+    playSound(type) {
+        if (!this.settings.enableSounds) return;
+        
+        // Criar contexto de áudio se não existir
+        if (!this.audioContext) {
+            try {
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            } catch (e) {
+                return; // Áudio não suportado
+            }
+        }
+        
+        // Se contexto estiver suspenso, tentar reativar
+        if (this.audioContext.state === 'suspended') {
+            this.audioContext.resume();
+        }
+        
+        const now = this.audioContext.currentTime;
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        
+        // Configurar som baseado no tipo
+        switch (type) {
+            case 'reveal':
+                oscillator.frequency.setValueAtTime(800, now);
+                oscillator.frequency.exponentialRampToValueAtTime(600, now + 0.1);
+                gainNode.gain.setValueAtTime(0.1, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                oscillator.stop(now + 0.1);
+                break;
+            case 'flag':
+                oscillator.frequency.setValueAtTime(1000, now);
+                gainNode.gain.setValueAtTime(0.1, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                oscillator.stop(now + 0.05);
+                break;
+            case 'mine':
+                oscillator.frequency.setValueAtTime(200, now);
+                oscillator.frequency.exponentialRampToValueAtTime(100, now + 0.5);
+                gainNode.gain.setValueAtTime(0.2, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+                oscillator.stop(now + 0.5);
+                break;
+            case 'win':
+                // Som de vitória com frequências ascendentes
+                oscillator.frequency.setValueAtTime(523, now); // C5
+                oscillator.frequency.setValueAtTime(659, now + 0.1); // E5
+                oscillator.frequency.setValueAtTime(784, now + 0.2); // G5
+                oscillator.frequency.setValueAtTime(1047, now + 0.3); // C6
+                gainNode.gain.setValueAtTime(0.1, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                oscillator.stop(now + 0.4);
+                break;
+            case 'move':
+                oscillator.frequency.setValueAtTime(400, now);
+                gainNode.gain.setValueAtTime(0.05, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.03);
+                oscillator.stop(now + 0.03);
+                break;
+        }
+        
+        oscillator.start(now);
+    }
+    
+    setupKeyboardNavigation() {
+        document.addEventListener('keydown', (e) => {
+            if (!this.keyboardNavigation.enabled || this.shouldShowStartScreen || this.gameState !== 'playing') {
+                return;
+            }
+            
+            const { currentX, currentY } = this.keyboardNavigation;
+            const width = this.actualWidth;
+            const height = this.actualHeight;
+            
+            switch(e.key) {
+                case 'ArrowUp':
+                    e.preventDefault();
+                    if (currentY > 0) {
+                        this.keyboardNavigation.currentY--;
+                        this.updateKeyboardFocus();
+                        this.playSound('move');
+                    }
+                    break;
+                    
+                case 'ArrowDown':
+                    e.preventDefault();
+                    if (currentY < height - 1) {
+                        this.keyboardNavigation.currentY++;
+                        this.updateKeyboardFocus();
+                        this.playSound('move');
+                    }
+                    break;
+                    
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    if (currentX > 0) {
+                        this.keyboardNavigation.currentX--;
+                        this.updateKeyboardFocus();
+                        this.playSound('move');
+                    }
+                    break;
+                    
+                case 'ArrowRight':
+                    e.preventDefault();
+                    if (currentX < width - 1) {
+                        this.keyboardNavigation.currentX++;
+                        this.updateKeyboardFocus();
+                        this.playSound('move');
+                    }
+                    break;
+                    
+                case 'Enter':
+                    e.preventDefault();
+                    this.revealTile(currentX, currentY);
+                    break;
+                    
+                case ' ':
+                    e.preventDefault();
+                    this.toggleFlag(currentX, currentY);
+                    break;
+                    
+                case 'Escape':
+                    e.preventDefault();
+                    this.keyboardNavigation.focusVisible = false;
+                    this.updateKeyboardFocus();
+                    break;
+            }
+        });
+        
+        // Mostrar foco quando usar teclado
+        document.addEventListener('keydown', (e) => {
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                this.keyboardNavigation.focusVisible = true;
+                this.updateKeyboardFocus();
+            }
+        });
+        
+        // Esconder foco quando usar mouse
+        document.addEventListener('mousedown', () => {
+            this.keyboardNavigation.focusVisible = false;
+            this.updateKeyboardFocus();
+        });
+    }
+    
+    updateKeyboardFocus() {
+        // Remover foco anterior
+        document.querySelectorAll('.tile.keyboard-focus').forEach(tile => {
+            tile.classList.remove('keyboard-focus');
+        });
+        
+        if (this.keyboardNavigation.focusVisible) {
+            const { currentX, currentY } = this.keyboardNavigation;
+            const tile = document.querySelector(`[data-x="${currentX}"][data-y="${currentY}"]`);
+            if (tile) {
+                tile.classList.add('keyboard-focus');
+            }
+        }
+    }
+
     setupEventListeners() {
         document.getElementById('new-game-btn').addEventListener('click', () => this.newGame());
         document.getElementById('difficulty-select').addEventListener('change', (e) => this.changeDifficulty(e.target.value));
@@ -276,6 +469,23 @@ class MinesweeperGame {
         document.getElementById('enable-no-guess').addEventListener('change', (e) => {
             this.settings.enableNoGuess = e.target.checked;
             this.saveSettings();
+        });
+        
+        document.getElementById('enable-keyboard-nav').addEventListener('change', (e) => {
+            this.settings.enableKeyboardNavigation = e.target.checked;
+            this.keyboardNavigation.enabled = e.target.checked;
+            this.saveSettings();
+        });
+        
+        document.getElementById('enable-sounds').addEventListener('change', (e) => {
+            this.settings.enableSounds = e.target.checked;
+            this.saveSettings();
+        });
+        
+        document.getElementById('high-contrast').addEventListener('change', (e) => {
+            this.settings.highContrast = e.target.checked;
+            this.saveSettings();
+            this.applyHighContrast();
         });
         
         document.getElementById('reveal-btn').addEventListener('click', () => {
@@ -516,6 +726,11 @@ class MinesweeperGame {
         this.generateBoard();
         this.hideOverlay();
         
+        // Inicializar navegação por teclado no centro
+        this.keyboardNavigation.currentX = Math.floor(this.actualWidth / 2);
+        this.keyboardNavigation.currentY = Math.floor(this.actualHeight / 2);
+        this.keyboardNavigation.focusVisible = false;
+        
         document.getElementById('difficulty-select').value = this.currentDifficulty;
     }
     
@@ -553,11 +768,17 @@ class MinesweeperGame {
         const height = this.actualHeight;
         const mines = this.boardConfig.mines;
         
+        // console.log('=== PLACING MINES ===');
+        // console.log('No Guess mode enabled:', this.settings.enableNoGuess);
+        // console.log('Excluding position:', excludeX, excludeY);
+        
         // Se modo No Guess está ativo, tentar várias vezes até encontrar um layout válido
-        let maxAttempts = this.settings.enableNoGuess ? 50 : 1;
+        let maxAttempts = this.settings.enableNoGuess ? 100 : 1;
         let validLayout = false;
         
         for (let attempt = 0; attempt < maxAttempts; attempt++) {
+            if (attempt % 10 === 0) console.log('Attempt', attempt + 1, 'of', maxAttempts);
+            
             // Resetar o tabuleiro
             for (let y = 0; y < height; y++) {
                 for (let x = 0; x < width; x++) {
@@ -572,7 +793,10 @@ class MinesweeperGame {
             // Se No Guess não está ativo ou o layout é válido, aceitar
             if (!this.settings.enableNoGuess || this.validateNoGuessLayout()) {
                 validLayout = true;
+                console.log('Valid layout found on attempt', attempt + 1);
                 break;
+            } else {
+                console.log('Layout rejected, trying again...');
             }
         }
         
@@ -581,6 +805,8 @@ class MinesweeperGame {
             console.warn('Could not generate a No-Guess layout after', maxAttempts, 'attempts. Using random layout.');
         }
         
+        // console.log('=== MINES PLACED ===');
+        
         // Mostrar/esconder indicador
         this.updateNoGuessIndicator();
     }
@@ -588,9 +814,14 @@ class MinesweeperGame {
     placeRandomMines(excludeX, excludeY, width, height, mines) {
         const positions = [];
         
+        // Se modo No Guess está ativo, excluir uma área maior ao redor do primeiro clique
+        const excludeRadius = this.settings.enableNoGuess ? 2 : 0;
+        
         for (let y = 0; y < height; y++) {
             for (let x = 0; x < width; x++) {
-                if (x !== excludeX || y !== excludeY) {
+                // Verificar se está na área excluída
+                const distance = Math.max(Math.abs(x - excludeX), Math.abs(y - excludeY));
+                if (distance > excludeRadius) {
                     positions.push({ x, y });
                 }
             }
@@ -619,10 +850,50 @@ class MinesweeperGame {
         const width = this.actualWidth;
         const height = this.actualHeight;
         
+        console.log('=== VALIDATING NO GUESS LAYOUT ===');
+        console.log('Board dimensions:', width, 'x', height);
+        
         // Simular o processo de solução usando apenas lógica básica
         const testBoard = this.createTestBoard();
         const revealed = Array(height).fill().map(() => Array(width).fill(false));
         const flagged = Array(height).fill().map(() => Array(width).fill(false));
+        
+        // Tentar múltiplas posições para o primeiro clique
+        const testPositions = [
+            { x: Math.floor(width / 2), y: Math.floor(height / 2) }, // Centro
+            { x: Math.floor(width / 3), y: Math.floor(height / 3) }, // Canto superior esquerdo interno
+            { x: Math.floor(2 * width / 3), y: Math.floor(height / 3) }, // Canto superior direito interno
+            { x: Math.floor(width / 3), y: Math.floor(2 * height / 3) }, // Canto inferior esquerdo interno
+            { x: Math.floor(2 * width / 3), y: Math.floor(2 * height / 3) } // Canto inferior direito interno
+        ];
+        
+        let bestPosition = null;
+        let maxRevealed = 0;
+        
+        for (const pos of testPositions) {
+            const testRevealed = Array(height).fill().map(() => Array(width).fill(false));
+            if (this.simulateFirstClick(pos.x, pos.y, testBoard, testRevealed)) {
+                let revealedCount = 0;
+                for (let y = 0; y < height; y++) {
+                    for (let x = 0; x < width; x++) {
+                        if (testRevealed[y][x]) revealedCount++;
+                    }
+                }
+                if (revealedCount > maxRevealed) {
+                    maxRevealed = revealedCount;
+                    bestPosition = pos;
+                    // Copiar o melhor resultado para o array principal
+                    for (let y = 0; y < height; y++) {
+                        for (let x = 0; x < width; x++) {
+                            revealed[y][x] = testRevealed[y][x];
+                        }
+                    }
+                }
+            }
+        }
+        
+        console.log('Best first click position:', bestPosition);
+        console.log('Cells revealed by best first click:', maxRevealed);
         
         // Começar com o primeiro clique (não há mina no primeiro clique)
         let hasProgress = true;
@@ -652,7 +923,22 @@ class MinesweeperGame {
         }
         
         const totalSafeCells = width * height - this.boardConfig.mines;
-        return totalRevealed >= Math.floor(totalSafeCells * 0.7); // 70% deve ser solucionável com lógica básica
+        
+        // Critério mais flexível baseado no tamanho do tabuleiro
+        let requiredPercentage = 0.3; // 30% base
+        if (totalSafeCells < 50) requiredPercentage = 0.5; // Tabuleiros pequenos: 50%
+        else if (totalSafeCells < 200) requiredPercentage = 0.4; // Tabuleiros médios: 40%
+        
+        const requiredRevealed = Math.max(10, Math.floor(totalSafeCells * requiredPercentage));
+        const isValid = totalRevealed >= requiredRevealed;
+        
+        console.log('Total safe cells:', totalSafeCells);
+        console.log('Cells revealed by simulation:', totalRevealed);
+        console.log('Required to pass (' + (requiredPercentage * 100) + '%):', requiredRevealed);
+        console.log('Layout is valid:', isValid);
+        console.log('=== END VALIDATION ===');
+        
+        return isValid;
     }
     
     createTestBoard() {
@@ -671,6 +957,66 @@ class MinesweeperGame {
         }
         
         return testBoard;
+    }
+    
+    simulateFirstClick(x, y, testBoard, revealed) {
+        const width = this.actualWidth;
+        const height = this.actualHeight;
+        
+        console.log('simulateFirstClick called at:', x, y);
+        console.log('Cell value:', testBoard[y][x]);
+        
+        // Se a célula tem mina, não é um layout válido para No Guess
+        if (testBoard[y][x] === -1) {
+            console.log('REJECTED: First click would hit a mine!');
+            return false;
+        }
+        
+        // Revelar a célula clicada
+        revealed[y][x] = true;
+        console.log('Revealed center cell');
+        
+        // Se tem valor 0, fazer flood fill
+        if (testBoard[y][x] === 0) {
+            console.log('Starting flood fill from center (value 0)');
+            this.floodFillSimulation(x, y, testBoard, revealed);
+        } else {
+            console.log('No flood fill needed, center has value:', testBoard[y][x]);
+        }
+        
+        // Contar quantas células foram reveladas pelo primeiro clique
+        let revealedCount = 0;
+        for (let yy = 0; yy < height; yy++) {
+            for (let xx = 0; xx < width; xx++) {
+                if (revealed[yy][xx]) revealedCount++;
+            }
+        }
+        console.log('Cells revealed by first click:', revealedCount);
+        
+        return true;
+    }
+    
+    floodFillSimulation(x, y, testBoard, revealed) {
+        const width = this.actualWidth;
+        const height = this.actualHeight;
+        
+        for (let dy = -1; dy <= 1; dy++) {
+            for (let dx = -1; dx <= 1; dx++) {
+                const nx = x + dx;
+                const ny = y + dy;
+                
+                if (nx >= 0 && nx < width && ny >= 0 && ny < height && !revealed[ny][nx]) {
+                    if (testBoard[ny][nx] !== -1) { // Não é mina
+                        revealed[ny][nx] = true;
+                        
+                        // Se também é 0, continuar flood fill
+                        if (testBoard[ny][nx] === 0) {
+                            this.floodFillSimulation(nx, ny, testBoard, revealed);
+                        }
+                    }
+                }
+            }
+        }
     }
     
     applyBasicRules(x, y, testBoard, revealed, flagged) {
@@ -812,28 +1158,77 @@ class MinesweeperGame {
             handleSecondaryAction();
         });
         
+        // Melhor detecção de gestos mobile
+        let touchStartPos = null;
+        let touchStartTime = null;
+        const MOVEMENT_THRESHOLD = 10; // pixels
+        const TAP_TIME_THRESHOLD = 300; // ms
+        
         tile.addEventListener('touchstart', (e) => {
             e.preventDefault();
             if (e.touches.length === 1) {
+                const touch = e.touches[0];
+                touchStartPos = { x: touch.clientX, y: touch.clientY };
+                touchStartTime = Date.now();
                 isHolding = false;
+                
                 holdTimeout = setTimeout(() => {
-                    isHolding = true;
-                    handleSecondaryAction();
-                    this.triggerVibration();
+                    if (touchStartPos) { // Ainda tocando
+                        isHolding = true;
+                        handleSecondaryAction();
+                        this.triggerVibration();
+                    }
                 }, this.settings.holdDelay);
+            } else {
+                // Multi-touch detectado - cancelar ação
+                clearTimeout(holdTimeout);
+                touchStartPos = null;
+                isHolding = false;
+            }
+        });
+        
+        tile.addEventListener('touchmove', (e) => {
+            if (touchStartPos && e.touches.length === 1) {
+                const touch = e.touches[0];
+                const deltaX = Math.abs(touch.clientX - touchStartPos.x);
+                const deltaY = Math.abs(touch.clientY - touchStartPos.y);
+                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                
+                // Se movimento exceder threshold, cancelar ação
+                if (distance > MOVEMENT_THRESHOLD) {
+                    clearTimeout(holdTimeout);
+                    touchStartPos = null;
+                    isHolding = false;
+                }
+            } else {
+                // Multi-touch ou perda de referência - cancelar
+                clearTimeout(holdTimeout);
+                touchStartPos = null;
+                isHolding = false;
             }
         });
         
         tile.addEventListener('touchend', (e) => {
             e.preventDefault();
             clearTimeout(holdTimeout);
-            if (!isHolding && e.touches.length === 0) {
-                handlePrimaryAction();
+            
+            if (touchStartPos && !isHolding && e.touches.length === 0) {
+                const touchEndTime = Date.now();
+                const touchDuration = touchEndTime - touchStartTime;
+                
+                // Verificar se foi um tap rápido
+                if (touchDuration <= TAP_TIME_THRESHOLD) {
+                    handlePrimaryAction();
+                }
             }
+            
+            touchStartPos = null;
+            isHolding = false;
         });
         
-        tile.addEventListener('touchmove', (e) => {
+        tile.addEventListener('touchcancel', (e) => {
             clearTimeout(holdTimeout);
+            touchStartPos = null;
             isHolding = false;
         });
     }
@@ -850,12 +1245,14 @@ class MinesweeperGame {
         }
         
         if (cell.isMine) {
+            this.playSound('mine');
             this.gameOver(false);
             return;
         }
         
         cell.isRevealed = true;
         this.updateTile(x, y);
+        this.playSound('reveal');
         
         if (cell.neighborMines === 0) {
             this.floodFill(x, y);
@@ -916,6 +1313,7 @@ class MinesweeperGame {
         
         this.updateTile(x, y);
         this.updateDisplay();
+        this.playSound('flag');
     }
     
     chordClick(x, y) {
@@ -1053,6 +1451,7 @@ class MinesweeperGame {
         const safeCells = totalCells - this.boardConfig.mines;
         
         if (revealedCount === safeCells) {
+            this.playSound('win');
             this.gameOver(true);
         }
     }
@@ -1084,7 +1483,7 @@ class MinesweeperGame {
     
     openSettings() {
         document.getElementById('settings-panel').classList.remove('hidden');
-        this.updateHistoryDisplay('beginner');
+        this.updateHistoryDisplay('easy');
     }
     
     updateHistoryDisplay(difficulty) {
@@ -1177,6 +1576,7 @@ class MinesweeperGame {
             }
         });
     }
+    
     
     startNewGame(difficulty) {
         this.currentDifficulty = difficulty;

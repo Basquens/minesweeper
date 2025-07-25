@@ -18,39 +18,58 @@
                 </div>
                 
                 <div class="difficulty-cards">
-                    <div class="difficulty-card" data-difficulty="beginner">
+                    <div class="difficulty-card" data-difficulty="easy">
                         <div class="card-icon">🌱</div>
-                        <h3>Beginner</h3>
+                        <h3>Easy</h3>
                         <div class="card-details">
-                            <p>9×9 Grid</p>
+                            <p>10×7 Grid</p>
                             <p>10 Mines</p>
                         </div>
-                        <div class="best-time" id="best-beginner">Best: --:--</div>
+                        <div class="best-time" id="best-easy">Best: --:--</div>
                     </div>
                     
-                    <div class="difficulty-card" data-difficulty="intermediate">
+                    <div class="difficulty-card" data-difficulty="medium">
                         <div class="card-icon">⚡</div>
-                        <h3>Intermediate</h3>
+                        <h3>Medium</h3>
                         <div class="card-details">
-                            <p>16×16 Grid</p>
+                            <p>22×12 Grid</p>
                             <p>40 Mines</p>
                         </div>
-                        <div class="best-time" id="best-intermediate">Best: --:--</div>
+                        <div class="best-time" id="best-medium">Best: --:--</div>
                     </div>
                     
-                    <div class="difficulty-card" data-difficulty="expert">
+                    <div class="difficulty-card" data-difficulty="hard">
                         <div class="card-icon">🔥</div>
-                        <h3>Expert</h3>
+                        <h3>Hard</h3>
                         <div class="card-details">
-                            <p>30×16 Grid</p>
-                            <p>99 Mines</p>
+                            <p>32×18 Grid</p>
+                            <p>100 Mines</p>
                         </div>
-                        <div class="best-time" id="best-expert">Best: --:--</div>
+                        <div class="best-time" id="best-hard">Best: --:--</div>
+                    </div>
+                    
+                    <div class="difficulty-card" data-difficulty="huge">
+                        <div class="card-icon">🏔️</div>
+                        <h3>Huge</h3>
+                        <div class="card-details">
+                            <p>48×27 Grid</p>
+                            <p>220 Mines</p>
+                        </div>
+                        <div class="best-time" id="best-huge">Best: --:--</div>
+                    </div>
+                    
+                    <div class="difficulty-card" data-difficulty="extreme">
+                        <div class="card-icon">💀</div>
+                        <h3>Extreme</h3>
+                        <div class="card-details">
+                            <p>32×18 Grid</p>
+                            <p>150 Mines</p>
+                        </div>
+                        <div class="best-time" id="best-extreme">Best: --:--</div>
                     </div>
                 </div>
                 
                 <div class="start-actions">
-                    <button id="continue-last-btn" class="continue-btn hidden">Continue Last Game</button>
                     <button id="settings-start-btn" class="settings-start-btn">⚙️ Settings</button>
                 </div>
             </div>
@@ -77,9 +96,11 @@
                 <button id="new-game-btn" class="new-game-btn">New Game</button>
                 <div class="difficulty-selector">
                     <select id="difficulty-select">
-                        <option value="beginner">Beginner (9x9)</option>
-                        <option value="intermediate">Intermediate (16x16)</option>
-                        <option value="expert">Expert (30x16)</option>
+                        <option value="easy">Easy (10x7)</option>
+                        <option value="medium">Medium (22x12)</option>
+                        <option value="hard">Hard (32x18)</option>
+                        <option value="huge">Huge (48x27)</option>
+                        <option value="extreme">Extreme (32x18)</option>
                     </select>
                 </div>
             </div>
@@ -168,6 +189,25 @@
                         <p><small>May take longer to generate games</small></p>
                     </div>
                 </div>
+                
+                <div class="settings-section">
+                    <h3>Accessibility</h3>
+                    <div class="setting-toggle">
+                        <input type="checkbox" id="enable-keyboard-nav" name="enable-keyboard-nav">
+                        <label for="enable-keyboard-nav">Enable keyboard navigation</label>
+                    </div>
+                    <div class="setting-toggle">
+                        <input type="checkbox" id="enable-sounds" name="enable-sounds">
+                        <label for="enable-sounds">Enable game sounds</label>
+                    </div>
+                    <div class="setting-toggle">
+                        <input type="checkbox" id="high-contrast" name="high-contrast">
+                        <label for="high-contrast">High contrast mode</label>
+                    </div>
+                    <div class="instructions">
+                        <p><small>Use arrow keys to navigate, Enter to reveal, Space for flags</small></p>
+                    </div>
+                </div>
 
                 <div class="settings-section">
                     <h3>Color Theme</h3>
@@ -223,9 +263,11 @@
                     <h3>Game History</h3>
                     <div class="history-content">
                         <div class="difficulty-tabs">
-                            <button class="tab-btn active" data-difficulty="beginner">Beginner</button>
-                            <button class="tab-btn" data-difficulty="intermediate">Intermediate</button>
-                            <button class="tab-btn" data-difficulty="expert">Expert</button>
+                            <button class="tab-btn active" data-difficulty="easy">Easy</button>
+                            <button class="tab-btn" data-difficulty="medium">Medium</button>
+                            <button class="tab-btn" data-difficulty="hard">Hard</button>
+                            <button class="tab-btn" data-difficulty="huge">Huge</button>
+                            <button class="tab-btn" data-difficulty="extreme">Extreme</button>
                         </div>
                         
                         <div class="history-stats">
@@ -334,7 +376,7 @@
                     <div class="app-info">
                         <div class="version-info">
                             <span class="info-label">Version:</span>
-                            <span class="info-value" id="app-version">2.0.0</span>
+                            <span class="info-value" id="app-version">2.0.8</span>
                         </div>
                         <div class="cache-controls">
                             <button id="clear-cache-btn" class="clear-cache-btn">🔄 Clear Cache & Reload</button>
