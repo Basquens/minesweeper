@@ -188,9 +188,10 @@ body {
     background-color: var(--bg-color);
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     z-index: 2000;
     padding: 2rem;
+    overflow-y: auto;
 }
 
 .start-screen.hidden {
@@ -201,6 +202,8 @@ body {
     text-align: center;
     max-width: 600px;
     width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .game-logo h1 {
@@ -877,7 +880,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 3000;
     backdrop-filter: blur(4px);
 }
 
@@ -901,6 +904,12 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
+    position: sticky;
+    top: 0;
+    background-color: var(--settings-bg);
+    z-index: 10;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .settings-header h2 {
@@ -909,23 +918,25 @@ body {
 }
 
 .close-btn {
-    background: none;
-    border: none;
-    font-size: 2rem;
-    cursor: pointer;
-    color: var(--text-color);
-    padding: 0;
+    background: var(--button-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
     width: 32px;
     height: 32px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--text-color);
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    transition: background-color 0.2s ease;
+    transition: all 0.3s ease;
+    padding: 0;
 }
 
 .close-btn:hover {
     background-color: var(--button-hover);
+    border-color: var(--primary-color);
+    transform: scale(1.1);
 }
 
 .settings-section {

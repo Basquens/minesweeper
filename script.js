@@ -411,6 +411,14 @@ class MinesweeperGame {
         document.getElementById('difficulty-select').addEventListener('change', (e) => this.changeDifficulty(e.target.value));
         document.getElementById('settings-btn').addEventListener('click', () => this.openSettings());
         document.getElementById('close-settings').addEventListener('click', () => this.closeSettings());
+        
+        // Fechar settings ao clicar fora do popup
+        document.getElementById('settings-panel').addEventListener('click', (e) => {
+            if (e.target.id === 'settings-panel') {
+                this.closeSettings();
+            }
+        });
+        
         document.getElementById('play-again-btn').addEventListener('click', () => this.newGame());
         document.getElementById('view-board-btn').addEventListener('click', () => this.hideOverlay());
         document.getElementById('back-btn').addEventListener('click', () => this.showStartScreen());
@@ -1484,6 +1492,10 @@ class MinesweeperGame {
     openSettings() {
         document.getElementById('settings-panel').classList.remove('hidden');
         this.updateHistoryDisplay('easy');
+    }
+    
+    closeSettings() {
+        document.getElementById('settings-panel').classList.add('hidden');
     }
     
     updateHistoryDisplay(difficulty) {
